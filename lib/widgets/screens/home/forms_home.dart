@@ -5,7 +5,11 @@ import 'package:scouting_app/main.dart';
 class FormsHome implements HomeView {
   @override
   List<Widget> actions(BuildContext context) {
-    return null;
+    return <Widget> [
+      new IconButton(icon: new Icon(Icons.file_upload), onPressed: null),
+      new IconButton(icon: new Icon(Icons.add), onPressed: null),
+      new IconButton(icon: new Icon(Icons.more_vert), onPressed: null),
+    ];
   }
 
   @override

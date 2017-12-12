@@ -31,8 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
         key: const Key("HomeNavigationBar"),
         currentIndex: index,
         items: <BottomNavigationBarItem> [
-          const BottomNavigationBarItem(icon: const Icon(Icons.add_shopping_cart), title: const Text("Forms")), // TODO find good icons
-          const BottomNavigationBarItem(icon: const Icon(Icons.attach_money), title: const Text("Data")),
+          const BottomNavigationBarItem(icon: const Icon(Icons.format_list_bulleted), title: const Text("Forms")), // TODO find good icons
+          const BottomNavigationBarItem(icon: const Icon(Icons.insert_chart), title: const Text("Data")),
         ],
         onTap: (int value) => setState(() => index = value),
       ),

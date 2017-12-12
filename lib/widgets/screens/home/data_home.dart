@@ -5,7 +5,11 @@ import 'package:scouting_app/main.dart';
 class DataHome implements HomeView {
   @override
   List<Widget> actions(BuildContext context) {
-    return null;
+    return <Widget> [
+      new IconButton(icon: new Icon(Icons.file_download), onPressed: null),
+      new IconButton(icon: new Icon(Icons.search), onPressed: null),
+      new IconButton(icon: new Icon(Icons.more_vert), onPressed: null),
+    ];
   }
 
   @override
