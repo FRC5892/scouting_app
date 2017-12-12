@@ -6,7 +6,7 @@ class FormsHome implements HomeView {
   @override
   List<Widget> actions(BuildContext context) {
     return <Widget> [
-      new IconButton(icon: new Icon(Icons.file_upload), onPressed: null),
+      new IconButton(icon: new Icon(Icons.cloud_upload), onPressed: null),
       new IconButton(icon: new Icon(Icons.add), onPressed: null),
       new IconButton(icon: new Icon(Icons.more_vert), onPressed: null),
     ];
