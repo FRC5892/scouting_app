@@ -16,7 +16,6 @@ abstract class FRCForm extends StatelessWidget {
   final Map<String, dynamic> _saveHolder = new Map<String, dynamic>();
   void saveCallback(String key, dynamic value) => _saveHolder[key] = value;
   void submitCallback(BuildContext context) {
-    print('FRCForm.submitCallback');
     Form.of(context).save();
     saveCallback("teamNumber", teamNumber);
     saveCallback("formType", formType);
@@ -26,7 +25,6 @@ abstract class FRCForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('FRCForm.build');
     return new Form(
       autovalidate: true,
       child: new Builder(builder: (BuildContext context) => new Scaffold(
