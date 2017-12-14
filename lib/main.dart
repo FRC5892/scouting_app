@@ -3,6 +3,7 @@ import 'package:scouting_app/main.dart';
 
 export 'widgets/screens/intro_screen.dart';
 export 'widgets/screens/home/home_screen.dart';
+export 'widgets/forms/forms.dart';
 
 void main() {
   runApp(new MaterialApp(

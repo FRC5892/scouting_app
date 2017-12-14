@@ -7,7 +7,9 @@ class FormsHome implements HomeView {
   List<Widget> actions(BuildContext context) {
     return <Widget> [
       new IconButton(icon: new Icon(Icons.cloud_upload), onPressed: null),
-      new IconButton(icon: new Icon(Icons.add), onPressed: null),
+      new IconButton(icon: new Icon(Icons.add), onPressed: () {
+        Navigator.push(context, new MaterialPageRoute(builder: (_) => new TestForm(5892)));
+      }),
       new IconButton(icon: new Icon(Icons.more_vert), onPressed: null),
     ];
   }
