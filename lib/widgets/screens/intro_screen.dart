@@ -8,6 +8,8 @@ class IntroScreen extends StatelessWidget {
     (BuildContext context) async { // this is so stupid.
       Navigator.pushReplacementNamed(context, "/home");
     }(context); // TODO find less dumb solution
+    // sigh now I'm doing p much the same thing somewhere else.
+    // guess this is how you do it.
     return const Text("Don't worry about this.");
   }
 }

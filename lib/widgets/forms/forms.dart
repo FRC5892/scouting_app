@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scouting_app/main.dart';
 
 export 'test_form.dart';
 export 'fields/integer_field.dart';
@@ -21,6 +22,8 @@ abstract class FRCForm extends StatelessWidget {
     saveCallback("formType", formType);
     // TODO save as JSON
     print(_saveHolder);
+    StorageManager.addForm(_saveHolder);
+    Navigator.pop(context);
   }
 
   @override
