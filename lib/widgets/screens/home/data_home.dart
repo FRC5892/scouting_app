@@ -8,7 +8,7 @@ class DataHome implements HomeView {
     return <Widget> [
       new IconButton(icon: new Icon(Icons.cloud_download), onPressed: null),
       new IconButton(icon: new Icon(Icons.search), onPressed: null),
-      new IconButton(icon: new Icon(Icons.more_vert), onPressed: StorageManager.deleteEverything),
+      new IconButton(icon: new Icon(Icons.more_vert), onPressed: null),
     ];
   }
 

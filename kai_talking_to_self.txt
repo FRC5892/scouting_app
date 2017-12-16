@@ -10,3 +10,6 @@ Anything that implements HomeView (all both of them) would need to provide their
 Then each HomeView's build() method would build a Scaffold and put the navbar in its place.
 The HomeScreen would only need to manage showing the proper view at the proper time.
 Maybe use a GlobalKey for the appbar/navbar? It might be necessary. Don't overcomplicate it if it looks good without one.
+
+...you know what? Let's just use a Stream. That seems way less complicated.
+Time to go look up how Streams work.

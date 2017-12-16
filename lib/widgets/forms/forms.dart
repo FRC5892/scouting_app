@@ -22,7 +22,7 @@ abstract class FRCForm extends StatelessWidget {
     saveCallback("formType", formType);
     // TODO save as JSON
     print(_saveHolder);
-    StorageManager.addForm(_saveHolder);
+    StorageManager.instance.addForm(_saveHolder);
     Navigator.pop(context);
   }
 

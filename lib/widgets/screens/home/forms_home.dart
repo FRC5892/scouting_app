@@ -23,23 +23,26 @@ class FormsHome extends StatefulWidget implements HomeView {
 
 class _FormsHomeState extends State<FormsHome> {
   List<List<String>> formMeta;
+  StreamSubscription<Map<String, dynamic>> _formMetaSubscription;
 
-  Future<Null> syncFormMeta() async {
-    print('_FormsHomeState.syncFormMeta');
-    Map<String, dynamic> formsContent = await StorageManager.getForms();
-    print('_FormsHomeState.syncFormMeta(1): $formsContent');
+  _FormsHomeState() {
+    _formMetaSubscription = StorageManager.instance.formsStream.listen(makeFormMeta);
+  }
+
+  void makeFormMeta(Map<String, dynamic> formsContent) {
+    print('_FormsHomeState.makeFormMeta($formsContent)');
     List<List<String>> newList = formsContent[MapKeys.FORM_LIST_NAME].map(
       (Map<String, dynamic> input) => <String>[
-        input[MapKeys.TEAM_NUMBER], FORM_NAMES[input[MapKeys.FORM_TYPE]],
+        input[MapKeys.TEAM_NUMBER].toString(), FORM_NAMES[input[MapKeys.FORM_TYPE]],
       ]
     ).toList();
-    print('_FormsHomeState.syncFormMeta(2): $newList');
+    print('_FormsHomeState.makeFormMeta: $newList');
     setState(() => formMeta = newList);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (formMeta == null) syncFormMeta();
+    if (formMeta == null) StorageManager.instance.getForms().then(makeFormMeta);
     return new ListView.builder(
       itemBuilder: (BuildContext context, int index) {
         try {
@@ -52,5 +55,11 @@ class _FormsHomeState extends State<FormsHome> {
         }
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _formMetaSubscription.cancel();
+    super.dispose();
   }
 }

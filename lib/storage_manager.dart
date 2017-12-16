@@ -1,15 +1,32 @@
 import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 import 'package:path_provider/path_provider.dart';
 import 'package:scouting_app/main.dart';
 
-abstract class StorageManager {
-  static File _forms; static Map<String, dynamic> _formsContent;
-  static File _data; static Map<String, dynamic> _dataContent; // this might be a terrible idea.
+class StorageManager {
+  static final StorageManager instance = new StorageManager._(); // this shouldn't cause problems re: isolates because of laziness
 
-  static Future<Null> _init() async {
+  File _forms; Map<String, dynamic> _formsContent; // this might be a terrible idea.
+  File _data; Map<String, dynamic> _dataContent; // it could take up a lot of memory,
+  // though reading from the file every time might be equally dumb.
+
+  Future<Null> _initFuture;
+  StreamController<Map<String, dynamic>> _formsChangeController;
+  StreamController<Map<String, dynamic>> _dataChangeController;
+
+  StorageManager._() {
+    _initFuture = _init();
+
+    _formsChangeController = new StreamController<Map<String, dynamic>>.broadcast();
+
+    _dataChangeController = new StreamController<Map<String, dynamic>>.broadcast();
+  }
+
+  Stream<Map<String, dynamic>> get formsStream => _formsChangeController.stream;
+  Stream<Map<String, dynamic>> get dataStream => _dataChangeController.stream;
+
+  Future<Null> _init() async {
     if (_forms != null) return;
     print('StorageManager._init');
     String dir = (await getApplicationDocumentsDirectory()).path;
@@ -34,32 +51,37 @@ abstract class StorageManager {
     }
   }
 
-  static Future<Null> _save({bool forms, bool data}) async {
-    if (forms ?? (data == null))
-      _forms.writeAsString(JSON.encode(_formsContent));
-    if (data ?? (forms == null))
-      _data.writeAsString(JSON.encode(_dataContent));
+  void formsChanged() {
+    _formsChangeController.add(new Map.from(_formsContent));
   }
 
-  static Future<Map<String, dynamic>> getForms() async {
+  void dataChanged() {
+    _dataChangeController.add(new Map.from(_dataContent));
+  }
+
+  Future<Null> _save({bool forms, bool data}) async {
+    print('StorageManager._save');
+    if (forms ?? (data == null))
+      _forms.writeAsString(JSON.encode(_formsContent), flush: true); // TODO flush when app closed
+    if (data ?? (forms == null))
+      _data.writeAsString(JSON.encode(_dataContent), flush: true); // or even just save when app closed b/c this is a ton of i/o
+  }
+
+  Future<Map<String, dynamic>> getForms() async {
     print('StorageManager.getForms');
-    await _init();
+    await _initFuture;
     return new Map<String, dynamic>.from(_formsContent);
   }
 
-  static Future<Map<String, dynamic>> getData() async {
-    await _init();
+  Future<Map<String, dynamic>> getData() async {
+    await _initFuture;
     return new Map<String, dynamic>.from(_dataContent);
   }
 
-  static Future<Null> addForm(Map<String, dynamic> form) async {
-    await _init();
+  Future<Null> addForm(Map<String, dynamic> form) async {
+    await _initFuture;
     _formsContent["forms"].add(form);
-  }
-
-  static Future<Null> deleteEverything([bool doInit = false]) { // TODO get rid of this when done debugging
-    return Future.wait(<Future> [
-      _forms.delete(), _data.delete()
-    ]).then((_) {if (doInit) _init();});
+    formsChanged();
+    _save();
   }
 }
