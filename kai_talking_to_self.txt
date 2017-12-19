@@ -13,3 +13,21 @@ Maybe use a GlobalKey for the appbar/navbar? It might be necessary. Don't overco
 
 ...you know what? Let's just use a Stream. That seems way less complicated.
 Time to go look up how Streams work.
+
+Booyeah I didn't have to do the home screen over again.
+Now time to do forms over again.
+The way I am currently doing forms, it will be hard to actually look at the data a form contains.
+By look at I mean with human eyes, on a screen, in a format that makes sense to the JSON-illiterate.
+So. Planning.
+The way a form is set up can be defined by a class. Let's call it FRCFormType.
+Instead of overriding an abstract class, forms will be defined by being FRCFormType objects.
+Each FRCFormType will know its own codeName and be able to:
+ - create a Scaffold for the purpose of entering data
+ - take a JSON map and create a Scaffold that displays it
+Let's also have an FRCFormTypeManager that handles all of this. Takes in a codeName, spits out a form type.
+FRCFormTypes will have to register themselves with this in the constructor.
+How about a similar "static instance" pattern to StorageManager? Seems p legit.
+Also... FRCFormFieldType. That will totally need to be a thing. FRCFormTypeManager can handle managing them tho.
+Again, they will need to be able to render themselves for both entry and display.
+Bonus points if I can override the fields' default values (e.g. form editing).
+Form editing seems hard tho. Maybe later. At least deleting will definitely be important.
