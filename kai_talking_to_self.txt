@@ -14,6 +14,8 @@ Maybe use a GlobalKey for the appbar/navbar? It might be necessary. Don't overco
 ...you know what? Let's just use a Stream. That seems way less complicated.
 Time to go look up how Streams work.
 
+~~~
+
 Booyeah I didn't have to do the home screen over again.
 Now time to do forms over again.
 The way I am currently doing forms, it will be hard to actually look at the data a form contains.
@@ -31,3 +33,20 @@ Also... FRCFormFieldType. That will totally need to be a thing. FRCFormTypeManag
 Again, they will need to be able to render themselves for both entry and display.
 Bonus points if I can override the fields' default values (e.g. form editing).
 Form editing seems hard tho. Maybe later. At least deleting will definitely be important.
+
+What have I done so far?
+FRCFormTypes and FRCFormFieldTypes can build themselves, so that's pretty cool.
+But, in order to do viewing/editing, I'll have to have some class for a FormField that knows what type of field it is and what its key in the JSON is.
+...
+Or have an ordered list of keys in each FRCFormType?
+The type is responsible for sorting the JSON and passes that to the fields.
+This seems like a really stupid way to do it, but I can't see any immediate downfalls.
+Maybe add a convenience method for adding a field type and a key at the same time.
+Heck, when an FRCFormType is building for any sort of entry, it probably needs to know what its key is.
+This is so many typedefs. So so many.
+Hm. Maybe there should be classes for maintaining forms in whatever view they're using?
+That's a really bad way to explain my idea. Hopefully I can code it before I forget it.
+
+Also just remembered that fields will need custom titles. "Number of balls shot" or "Number of robots exploded" or something. Bluh.
+FRCFormFieldType will definitely need some class that holds all of this info for use when building the form.
+SIGH. All of these classes probably go in separate files anyway.
