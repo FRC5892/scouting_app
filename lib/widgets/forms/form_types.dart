@@ -8,9 +8,7 @@ class FRCFormType {
   final String codeName;
   final List<FRCFormFieldData> fields;
   final ParameterWidgetBuilder<List<Widget>> builder;
-  FRCFormType(this.codeName, this.fields, [this.builder = defaultBuilder]) {
-    FRCFormTypeManager.instance.register(this);
-  }
+  FRCFormType(this.codeName, this.fields, [this.builder = defaultBuilder]);
 
   Widget buildFormFill(BuildContext context, FRCFormSaveCallback saveCallback) {
     return builder(context, fields.map((f) => f.formFill(context, saveCallback)).toList());

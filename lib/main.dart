@@ -3,7 +3,7 @@ import 'package:scouting_app/main.dart';
 
 export 'widgets/screens/intro_screen.dart';
 export 'widgets/screens/home/home_screen.dart';
-export 'widgets/forms_old/forms.dart';
+export 'widgets/forms/forms.dart';
 export 'storage_manager.dart';
 export 'constants.dart';
 

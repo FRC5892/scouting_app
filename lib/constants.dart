@@ -1,7 +1,3 @@
-const Map<String, String> FORM_NAMES = const {
-  "testForm": "Test Form"
-};
-
 abstract class MapKeys {
   static const String FORM_LIST_NAME = "forms";
   static const String TRACKING_LIST_NAME = "tracking";

@@ -8,7 +8,7 @@ class FormsHome extends StatefulWidget implements HomeView {
     return <Widget> [
       new IconButton(icon: new Icon(Icons.cloud_upload), onPressed: null),
       new IconButton(icon: new Icon(Icons.add), onPressed: () {
-        Navigator.push(context, new MaterialPageRoute(builder: (_) => new TestForm()));
+        FRCFormTypeManager.instance.fillForm(context, "testForm", 5892);
       }),
       new IconButton(icon: new Icon(Icons.more_vert), onPressed: null),
     ];
@@ -22,7 +22,7 @@ class FormsHome extends StatefulWidget implements HomeView {
 }
 
 class _FormsHomeState extends State<FormsHome> {
-  List<List<String>> formMeta;
+  List<_FormMetaEntry> formMeta;
   StreamSubscription<Map<String, dynamic>> _formMetaSubscription;
 
   _FormsHomeState() {
@@ -31,11 +31,15 @@ class _FormsHomeState extends State<FormsHome> {
 
   void makeFormMeta(Map<String, dynamic> formsContent) {
     print('_FormsHomeState.makeFormMeta($formsContent)');
-    List<List<String>> newList = formsContent[MapKeys.FORM_LIST_NAME].map(
-      (Map<String, dynamic> input) => <String>[
-        input[MapKeys.TEAM_NUMBER].toString(), FORM_NAMES[input[MapKeys.FORM_TYPE]],
-      ]
-    ).toList();
+    List<_FormMetaEntry> newList = formsContent[MapKeys.FORM_LIST_NAME].map(
+      (Map<String, dynamic> input) {
+        FRCFormType type = FRCFormTypeManager.instance.getTypeByCodeName(input[MapKeys.FORM_TYPE]);
+        return new _FormMetaEntry(
+          title: type.title(input[MapKeys.TEAM_NUMBER]),
+          teamNumber: input[MapKeys.TEAM_NUMBER],
+          type: type,
+        );
+      }).toList();
     print('_FormsHomeState.makeFormMeta: $newList');
     setState(() => formMeta = newList);
   }
@@ -47,8 +51,14 @@ class _FormsHomeState extends State<FormsHome> {
       itemBuilder: (BuildContext context, int index) {
         try {
           return new ListTile(
-            title: new Text(formMeta[index][0]),
-            trailing: new Text(formMeta[index][1]),
+            title: new Text(formMeta[index].title),
+            onTap: () async {
+              Map<String, dynamic> formsContent = await StorageManager.instance.getForms();
+              Map<String, dynamic> json = formsContent[MapKeys.FORM_LIST_NAME][index];
+              Navigator.push(context, new MaterialPageRoute(builder: (_) =>
+                new FRCFormDataView(formMeta[index].title, json, formMeta[index].type)
+              ));
+            },
           );
         } on Object {
           return null;
@@ -62,4 +72,11 @@ class _FormsHomeState extends State<FormsHome> {
     _formMetaSubscription.cancel();
     super.dispose();
   }
+}
+
+class _FormMetaEntry {
+  final String title;
+  final int teamNumber;
+  final FRCFormType type;
+  _FormMetaEntry({this.title, this.teamNumber, this.type});
 }

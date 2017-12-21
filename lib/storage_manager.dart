@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:scouting_app/main.dart';
 
 class StorageManager {
-  static final StorageManager instance = new StorageManager._(); // this shouldn't cause problems re: isolates because of laziness
+  static final StorageManager instance = new StorageManager._();
 
   File _forms; Map<String, dynamic> _formsContent; // this might be a terrible idea.
   File _data; Map<String, dynamic> _dataContent; // it could take up a lot of memory,
@@ -64,7 +64,7 @@ class StorageManager {
     if (forms ?? (data == null))
       _forms.writeAsString(JSON.encode(_formsContent), flush: true); // TODO flush when app closed
     if (data ?? (forms == null))
-      _data.writeAsString(JSON.encode(_dataContent), flush: true); // or even just save when app closed b/c this is a ton of i/o
+      _data.writeAsString(JSON.encode(_dataContent), flush: true);
   }
 
   Future<Map<String, dynamic>> getForms() async {

@@ -15,8 +15,8 @@ class FRCFormFillView extends StatelessWidget {
   void saveCallback(String key, dynamic value) => _saveHolder[key] = value;
   void submitCallback(BuildContext context) {
     Form.of(context).save();
-    saveCallback("teamNumber", teamNumber);
-    saveCallback("formType", type.codeName);
+    saveCallback(MapKeys.TEAM_NUMBER, teamNumber);
+    saveCallback(MapKeys.FORM_TYPE, type.codeName);
     StorageManager.instance.addForm(_saveHolder);
     Navigator.pop(context);
   }
@@ -50,7 +50,7 @@ class FRCFormDataView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> values = type.fields.map((f) => json[f.jsonKey]); // returns null if absent
+    List<dynamic> values = type.fields.map((f) => json[f.jsonKey]).toList(); // returns null if absent
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(title),
