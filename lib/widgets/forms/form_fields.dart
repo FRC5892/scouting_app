@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'forms.dart';
 
-typedef Widget FRCFormFieldBuilder<T>(BuildContext context, FRCFormFieldData<T> data, FRCFormSaveCallback saveCallback);
-typedef Widget FRCFormFieldValueBuilder<T>(BuildContext context, FRCFormFieldData<T> data, T value);
+typedef Widget FRCFormFieldFill<T>(FRCFormFieldData<T> data, FRCFormSaveCallback saveCallback);
+typedef Widget FRCFormFieldView<T>(FRCFormFieldData<T> data, T value);
 
 class FRCFormFieldType<T> {
-  final FRCFormFieldBuilder<T> formFillBuilder;
-  // TODO final FRCFormFieldValueBuilder<T> formEditBuilder;
-  final FRCFormFieldValueBuilder<T> dataViewBuilder;
+  final FRCFormFieldFill<T> formFill;
+  // TODO final FRCFormFieldData<T> formEdit;
+  final FRCFormFieldView<T> dataView;
 
-  FRCFormFieldType(this.formFillBuilder, this.dataViewBuilder);
+  const FRCFormFieldType(this.formFill, this.dataView);
 }
 
 class FRCFormFieldData<T> {
@@ -19,6 +19,6 @@ class FRCFormFieldData<T> {
   FRCFormFieldData(this.type, this.jsonKey, this.title);
 
   // convenience methods
-  Widget buildFill(BuildContext context, FRCFormSaveCallback saveCallback) => type.formFillBuilder(context, this, saveCallback);
-  Widget buildView(BuildContext context, T value) => type.dataViewBuilder(context, this, value);
+  Widget formFill(BuildContext context, FRCFormSaveCallback saveCallback) => type.formFill(this, saveCallback);
+  Widget dataView(BuildContext context, T value) => type.dataView(this, value);
 }
