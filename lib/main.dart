@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scouting_app/main.dart';
 
 export 'constants.dart';
-export 'storage_manager.dart';
+export 'managers/storage_manager.dart';
 export 'widgets/forms/forms.dart';
 export 'widgets/screens/home/home_screen.dart';
 export 'widgets/screens/intro_screen.dart';

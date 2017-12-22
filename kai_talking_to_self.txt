@@ -50,3 +50,37 @@ That's a really bad way to explain my idea. Hopefully I can code it before I for
 Also just remembered that fields will need custom titles. "Number of balls shot" or "Number of robots exploded" or something. Bluh.
 FRCFormFieldType will definitely need some class that holds all of this info for use when building the form.
 SIGH. All of these classes probably go in separate files anyway.
+
+~~~
+
+Time to start integrating Firebase.
+Cloud Firestore looks cool. And Flutter is still in alpha, so what's the harm in making another not-fully-released tool integral to the app's basic functionality?
+I don't know a better place to put this, so here are the access rules I came up with:
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userID} {
+      allow read, write: if request.auth.uid == userID;
+    }
+    match /data/{teamCode} {
+      function canAccess() {
+        return get(/databases/$(database)/documents/users/$(request.auth.uid)/teamCode) == teamCode &&
+               get(/databases/$(database)/documents/users/$(request.auth.uid)/teamPass) == get(/databases/$(database)/documents/data/$(teamCode)/teamPass);
+      }
+    	allow read, write: if canAccess();
+      allow create;
+      match /teamPass {
+      	allow create;
+      }
+      match /{allChildren=**} {
+      	allow read, write: if canAccess();
+      }
+    }
+  }
+}
+
+IntroScreen will give users the choice to create or join a team. teamCode will just be some generated string, while the team will decide on teamPass.
+Encourage teamPass to be something stupidly obvious to the team. Like the team number. Or team name.
+Actually, does there need to be a teamPass? Yes: security through obscurity is bad practice.
+I don't want to make user authentication a huge deal. Ideally, the app will just make up a userID the first time it is run, save it, and authenticate with it.
+Maybe two IDs, in case Firebase yells at me for not having a password. Actually two is probably better anyway.
