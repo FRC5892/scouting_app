@@ -1,6 +1,7 @@
-import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:scouting_app/main.dart';
 
@@ -17,9 +18,7 @@ class StorageManager {
 
   StorageManager._() {
     _initFuture = _init();
-
     _formsChangeController = new StreamController<Map<String, dynamic>>.broadcast();
-
     _dataChangeController = new StreamController<Map<String, dynamic>>.broadcast();
   }
 
@@ -27,8 +26,6 @@ class StorageManager {
   Stream<Map<String, dynamic>> get dataStream => _dataChangeController.stream;
 
   Future<Null> _init() async {
-    if (_forms != null) return;
-    print('StorageManager._init');
     String dir = (await getApplicationDocumentsDirectory()).path;
     _forms = new File("$dir/forms.json");
     _data = new File("$dir/data.json");
@@ -39,7 +36,6 @@ class StorageManager {
       _formsContent = JSON.decode(jsons[0]);
       _dataContent = JSON.decode(jsons[1]);
     } on FileSystemException { // should handle creation
-      print('StorageManager._init - creating files');
       _formsContent = <String, dynamic> {
         MapKeys.FORM_LIST_NAME: <Map<String, dynamic>> [],
       };
@@ -60,7 +56,6 @@ class StorageManager {
   }
 
   Future<Null> _save({bool forms, bool data}) async {
-    print('StorageManager._save');
     if (forms ?? (data == null))
       _forms.writeAsString(JSON.encode(_formsContent), flush: true); // TODO flush when app closed
     if (data ?? (forms == null))
@@ -68,7 +63,6 @@ class StorageManager {
   }
 
   Future<Map<String, dynamic>> getForms() async {
-    print('StorageManager.getForms');
     await _initFuture;
     return new Map<String, dynamic>.from(_formsContent);
   }

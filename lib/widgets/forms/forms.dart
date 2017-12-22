@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'forms.dart';
-import 'dart:async';
 
-export 'form_types.dart';
-export 'form_views.dart';
-export 'form_fields.dart';
+import 'forms.dart';
 
 export 'fields/integer_field.dart';
-
+export 'form_fields.dart';
+export 'form_types.dart';
+export 'form_views.dart';
 export 'forms/test_form.dart';
 
 class FRCFormTypeManager {

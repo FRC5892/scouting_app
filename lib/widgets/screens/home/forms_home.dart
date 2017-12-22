@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:scouting_app/main.dart';
 
 class FormsHome extends StatefulWidget implements HomeView {

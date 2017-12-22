@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:scouting_app/main.dart';
 
 class DataHome implements HomeView {

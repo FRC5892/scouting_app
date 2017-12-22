@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'forms.dart';
 
 typedef Widget FRCFormFieldFill<T>(FRCFormFieldData<T> data, FRCFormSaveCallback saveCallback);
@@ -19,6 +20,6 @@ class FRCFormFieldData<T> {
   FRCFormFieldData(this.type, this.jsonKey, this.title);
 
   // convenience methods
-  Widget formFill(BuildContext context, FRCFormSaveCallback saveCallback) => type.formFill(this, saveCallback);
-  Widget dataView(BuildContext context, T value) => type.dataView(this, value);
+  Widget formFill(FRCFormSaveCallback saveCallback) => type.formFill(this, saveCallback);
+  Widget dataView(T value) => type.dataView(this, value);
 }

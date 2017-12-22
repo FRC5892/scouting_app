@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../forms.dart';
 
 class IntegerField extends FRCFormFieldType<int> {

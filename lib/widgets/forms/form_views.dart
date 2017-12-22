@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'forms.dart';
-
 import 'package:scouting_app/main.dart';
+
+import 'forms.dart';
 
 typedef void FRCFormSaveCallback(String codeName, dynamic value);
 
