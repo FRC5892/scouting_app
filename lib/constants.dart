@@ -5,4 +5,5 @@ abstract class MapKeys {
 
   static const String FORM_TYPE = "formType";
   static const String TEAM_NUMBER = "teamNumber";
+  static const String TIMESTAMP = "timestamp";
 }

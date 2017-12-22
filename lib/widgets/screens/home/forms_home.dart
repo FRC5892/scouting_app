@@ -31,17 +31,16 @@ class _FormsHomeState extends State<FormsHome> {
   }
 
   void makeFormMeta(Map<String, dynamic> formsContent) {
-    print('_FormsHomeState.makeFormMeta($formsContent)');
     List<_FormMetaEntry> newList = formsContent[MapKeys.FORM_LIST_NAME].map(
       (Map<String, dynamic> input) {
         FRCFormType type = FRCFormTypeManager.instance.getTypeByCodeName(input[MapKeys.FORM_TYPE]);
         return new _FormMetaEntry(
           title: type.title(input[MapKeys.TEAM_NUMBER]),
           teamNumber: input[MapKeys.TEAM_NUMBER],
+          timestamp: new DateTime.fromMillisecondsSinceEpoch(input[MapKeys.TIMESTAMP]),
           type: type,
         );
       }).toList();
-    print('_FormsHomeState.makeFormMeta: $newList');
     setState(() => formMeta = newList);
   }
 
@@ -49,15 +48,19 @@ class _FormsHomeState extends State<FormsHome> {
   Widget build(BuildContext context) {
     if (formMeta == null) StorageManager.instance.getForms().then(makeFormMeta);
     return new ListView.builder(
+      itemCount: formMeta?.length,
       itemBuilder: (BuildContext context, int index) {
         try {
+          index = formMeta.length - index - 1; // reverse
+          _FormMetaEntry meta = formMeta[index];
           return new ListTile(
-            title: new Text(formMeta[index].title),
+            title: new Text(meta.title),
+            trailing: new Text(meta.timestamp.toString()),
             onTap: () async {
               Map<String, dynamic> formsContent = await StorageManager.instance.getForms();
               Map<String, dynamic> json = formsContent[MapKeys.FORM_LIST_NAME][index];
               Navigator.push(context, new MaterialPageRoute(builder: (_) =>
-                new FRCFormDataView(formMeta[index].title, json, formMeta[index].type)
+                new FRCFormDataView(meta.title, json, meta.type)
               ));
             },
           );
@@ -78,6 +81,7 @@ class _FormsHomeState extends State<FormsHome> {
 class _FormMetaEntry {
   final String title;
   final int teamNumber;
+  final DateTime timestamp;
   final FRCFormType type;
-  _FormMetaEntry({this.title, this.teamNumber, this.type});
+  _FormMetaEntry({this.title, this.teamNumber, this.timestamp, this.type});
 }
