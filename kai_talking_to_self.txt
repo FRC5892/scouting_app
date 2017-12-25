@@ -84,3 +84,30 @@ Encourage teamPass to be something stupidly obvious to the team. Like the team n
 Actually, does there need to be a teamPass? Yes: security through obscurity is bad practice.
 I don't want to make user authentication a huge deal. Ideally, the app will just make up a userID the first time it is run, save it, and authenticate with it.
 Maybe two IDs, in case Firebase yells at me for not having a password. Actually two is probably better anyway.
+
+Welp. Just looked up how to actually do custom auth. That isn't going to work.
+So... people are going to have to sign in with, like, a Google account or something.
+RIP the nonintrusive authentication process.
+Or maybe do it anonymously? How would that work.
+The app would store teamCode, teamPass, and the user's name. Every time you push/pull, you sign in as a new anonymous user.
+Can teamPass just be added as, like, a request header or something?
+Doesn't look like it.
+Boy it sure would be nice if email/password sign-in didn't require an email.
+I could have the anonymous user add its credentials to "users", make its push/query, then delete itself.
+Let's take another look at custom authentication. What would it take to make that work?
+The instructions say that a JWT must be generated and sent to the client app.
+The Firebase Admin SDK has this built in, but is not available for Dart, so that's a no go.
+Alternately, if your language has a JWT library, you can generate it like that and send it to the client app.
+Generating it in the client app would make that really easy..? No. Generating it requires a private key.
+There has to be a way to do this. I get that this isn't Firebase's exact use case, but it should be close enough, right?
+Maybe add fields to the anonymous auth token? That looks like a thing you should be able to do.
+
+Okay. Here's the plan.
+Whenever the app needs to push or get from the database, it will sign in with a new anonymous account.
+The app will put teamPass into its own document from "users" along with a timestamp in case cleanup is needed later.
+"users" doesn't need to store teamCode, that should be apparent from the request/query. (I should probably make a new text file to put the current storage rules.)
+After that, the app will do whatever it needs to, delete its "users" info, and sign out.
+Seems pretty legit, as long as I make sure it doesn't try to sign in multiple times or something.
+
+Well crap. It's refusing to compile now.
+I think this is probably a good time to commit.

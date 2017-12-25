@@ -36,15 +36,24 @@ class StorageManager {
       _formsContent = JSON.decode(jsons[0]);
       _dataContent = JSON.decode(jsons[1]);
     } on FileSystemException { // should handle creation
-      _formsContent = <String, dynamic> {
-        MapKeys.FORM_LIST_NAME: <Map<String, dynamic>> [],
-      };
-      _dataContent = <String, dynamic> {
-        MapKeys.TRACKING_LIST_NAME: <int> [],
-        MapKeys.DATA_MAP_NAME: <String, dynamic> {},
-      };
-      await _save();
+      await Future.wait(<Future<Null>>[clearForms(), clearData()]);
     }
+  }
+
+  Future<Null> clearForms() {
+    _formsContent = <String, dynamic> {
+      MapKeys.FORM_LIST_NAME: <Map<String, dynamic>> [],
+    };
+    return _save(forms: true);
+  }
+
+  Future<Null> clearData() {
+    _dataContent = <String, dynamic> {
+      MapKeys.LAST_GET_TIMESTAMP_NAME: 0,
+      MapKeys.TRACKING_LIST_NAME: <int> [],
+      MapKeys.DATA_MAP_NAME: <String, dynamic> {},
+    };
+    return _save(data: true);
   }
 
   void formsChanged() {
@@ -76,6 +85,6 @@ class StorageManager {
     await _initFuture;
     _formsContent["forms"].add(form);
     formsChanged();
-    _save();
+    _save(forms: true);
   }
 }

@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:scouting_app/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'forms.dart';
 
@@ -13,10 +15,11 @@ class FRCFormFillView extends StatelessWidget {
   FRCFormFillView(this.title, this.teamNumber, this.type);
   
   void saveCallback(String key, dynamic value) => _saveHolder[key] = value;
-  void submitCallback(BuildContext context) {
+  Future<Null> submitCallback(BuildContext context) async {
     Form.of(context).save();
     saveCallback(MapKeys.TEAM_NUMBER, teamNumber);
     saveCallback(MapKeys.FORM_TYPE, type.codeName);
+    saveCallback(MapKeys.USER_NAME, (await SharedPreferences.getInstance()).getString(MapKeys.USER_NAME));
     saveCallback(MapKeys.TIMESTAMP, new DateTime.now().millisecondsSinceEpoch);
     StorageManager.instance.addForm(_saveHolder);
     Navigator.pop(context);
