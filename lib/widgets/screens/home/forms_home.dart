@@ -7,11 +7,13 @@ class FormsHome extends StatefulWidget implements HomeView {
   @override
   List<Widget> actions(BuildContext context) {
     return <Widget> [
-      new IconButton(icon: new Icon(Icons.cloud_upload), onPressed: null),
+      new IconButton(icon: new Icon(Icons.cloud_upload), onPressed: () =>
+        showDialog(context: context, barrierDismissible: false, child: new FirebasePushDialog())
+      ),
       new IconButton(icon: new Icon(Icons.add), onPressed: () {
         FRCFormTypeManager.instance.fillForm(context, "testForm", 5892);
       }),
-      new IconButton(icon: new Icon(Icons.more_vert), onPressed: null),
+      new IconButton(icon: new Icon(Icons.more_vert), onPressed: StorageManager.instance.clearForms),
     ];
   }
 

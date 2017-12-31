@@ -27,18 +27,21 @@ class FirebaseManager {
   Future<Null> getData() async => throw "TODO";
 
   Future<FirebaseUser> _signIn() async {
+    print('FirebaseManager._signIn');
     SharedPreferences sPrefs = await SharedPreferences.getInstance();
+    print("teamCode: ${sPrefs.getString("teamCode")}");
+    print("teamPass: ${sPrefs.getString("teamPass")}");
     FirebaseUser user = await FirebaseAuth.instance.signInAnonymously();
-    Map<String, dynamic> userData = <String, dynamic> {
-      "teamPass": sPrefs.getString("teamPass"),
-      "timestamp": new DateTime.now(),
+    /*Map<String, dynamic> userData = <String, dynamic> {
+      "teamPass": sPrefs.getString(MapKeys.TEAM_PASS),
+      "timestamp": new DateTime.now().millisecondsSinceEpoch,
     };
-    await Firestore.instance.document("users/${user.uid}").setData(userData);
+    await Firestore.instance.document("users/${user.uid}").setData(userData);*/
     return user;
   }
 
   Future<Null> _signOut(FirebaseUser user) async {
-    await Firestore.instance.document("users/${user.uid}").delete();
+    //await Firestore.instance.document("users/${user.uid}").delete();
     await FirebaseAuth.instance.signOut();
   }
 }

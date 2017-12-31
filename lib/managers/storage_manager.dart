@@ -44,6 +44,7 @@ class StorageManager {
     _formsContent = <String, dynamic> {
       MapKeys.FORM_LIST_NAME: <Map<String, dynamic>> [],
     };
+    formsChanged();
     return _save(forms: true);
   }
 
