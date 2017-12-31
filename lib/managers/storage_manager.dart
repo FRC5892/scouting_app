@@ -1,91 +1,110 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:scouting_app/main.dart';
 
 class StorageManager {
-  static final StorageManager instance = new StorageManager._();
+  static final Future<Null> _initFuture = _init();
 
-  File _forms; Map<String, dynamic> _formsContent; // this might be a terrible idea.
-  File _data; Map<String, dynamic> _dataContent; // it could take up a lot of memory,
-  // though reading from the file every time might be equally dumb.
+  static Directory _formsDir;
+  static Directory _dataDir;
+  // the analyzer is complaining that i need to close these... when?
+  static StreamController<Null> _formsChangeController = new StreamController<Null>.broadcast();
+  static StreamController<Null> _dataChangeController = new StreamController<Null>.broadcast();
 
-  Future<Null> _initFuture;
-  StreamController<Map<String, dynamic>> _formsChangeController;
-  StreamController<Map<String, dynamic>> _dataChangeController;
+  static Stream<Null> get formsChangeNotifier => _formsChangeController.stream;
+  static Stream<Null> get dataChangeNotifier => _dataChangeController.stream;
 
-  StorageManager._() {
-    _initFuture = _init();
-    _formsChangeController = new StreamController<Map<String, dynamic>>.broadcast();
-    _dataChangeController = new StreamController<Map<String, dynamic>>.broadcast();
-  }
+  static void _formsChanged() => _formsChangeController.add(null);
+  static void _dataChanged() => _dataChangeController.add(null);
 
-  Stream<Map<String, dynamic>> get formsStream => _formsChangeController.stream;
-  Stream<Map<String, dynamic>> get dataStream => _dataChangeController.stream;
-
-  Future<Null> _init() async {
-    String dir = (await getApplicationDocumentsDirectory()).path;
-    _forms = new File("$dir/forms.json");
-    _data = new File("$dir/data.json");
-    try {
-      List<String> jsons = await Future.wait(<Future<String>>[
-        _forms.readAsString(), _data.readAsString()
+  static Future<Null> _init() async {
+    String rootDir = (await getApplicationDocumentsDirectory()).path;
+    _formsDir = new Directory("$rootDir/forms");
+    _dataDir = new Directory("$rootDir/data");
+    if (!await _formsDir.exists()) {
+      await Future.wait(<Future> [
+        _formsDir.create(),
+        _dataDir.create(),
+        new File("$rootDir/data/tracking.csv").create(),
       ]);
-      _formsContent = JSON.decode(jsons[0]);
-      _dataContent = JSON.decode(jsons[1]);
-    } on FileSystemException { // should handle creation
-      await Future.wait(<Future<Null>>[clearForms(), clearData()]);
     }
   }
 
-  Future<Null> clearForms() {
-    _formsContent = <String, dynamic> {
-      MapKeys.FORM_LIST_NAME: <Map<String, dynamic>> [],
-    };
-    formsChanged();
-    return _save(forms: true);
-  }
-
-  Future<Null> clearData() {
-    _dataContent = <String, dynamic> {
-      MapKeys.LAST_GET_TIMESTAMP_NAME: 0,
-      MapKeys.TRACKING_LIST_NAME: <int> [],
-      MapKeys.DATA_MAP_NAME: <String, dynamic> {},
-    };
-    return _save(data: true);
-  }
-
-  void formsChanged() {
-    _formsChangeController.add(new Map.from(_formsContent));
-  }
-
-  void dataChanged() {
-    _dataChangeController.add(new Map.from(_dataContent));
-  }
-
-  Future<Null> _save({bool forms, bool data}) async {
-    if (forms ?? (data == null))
-      _forms.writeAsString(JSON.encode(_formsContent), flush: true); // TODO flush when app closed
-    if (data ?? (forms == null))
-      _data.writeAsString(JSON.encode(_dataContent), flush: true);
-  }
-
-  Future<Map<String, dynamic>> getForms() async {
+  static Stream<FormWithMetadata> getForms() async* {
     await _initFuture;
-    return new Map<String, dynamic>.from(_formsContent);
+    await for (FileSystemEntity f in _formsDir.list()) {
+      if (f is File) {
+        yield new FormWithMetadata(JSON.decode(await f.readAsString()),
+          uid: f.path.split('/').last.split('.').first,
+          timestamp: await f.lastModified(),
+        );
+      }
+    }
   }
 
-  Future<Map<String, dynamic>> getData() async {
+  static Future<FormWithMetadata> getFormWithUid(String uid) async {
     await _initFuture;
-    return new Map<String, dynamic>.from(_dataContent);
+    File formFile = new File("${_formsDir.path}/$uid.json");
+    return new FormWithMetadata(JSON.decode(await formFile.readAsString()),
+      uid: uid,
+      timestamp: await formFile.lastModified(),
+    );
   }
 
-  Future<Null> addForm(Map<String, dynamic> form) async {
+  static Future<List<int>> getTrackedTeams() async {
     await _initFuture;
-    _formsContent["forms"].add(form);
-    formsChanged();
-    _save(forms: true);
+    return (await new File("${_dataDir.path}/tracking.csv").readAsString())
+        .split(',').map(int.parse);
+    // remember that there is a good package out there if the csv gets any more involved.
+  }
+
+  static Stream<Map<String, dynamic>> getDataForTeam(int teamNumber) async* {
+    await _initFuture;
+    Directory teamDir = new Directory("${_dataDir.path}/$teamNumber");
+    if (await teamDir.exists()) {
+      await for (FileSystemEntity f in teamDir.list()) {
+        if (f is File) {
+          yield JSON.decode(await f.readAsString());
+        }
+      }
+    }
+  }
+
+  static Future<Null> addForm(Map<String, dynamic> form) async {
+    await _initFuture;
+    String uid = randomUID();
+    await new File("${_formsDir.path}/$uid.json").writeAsString(JSON.encode(form), flush: true);
+    _formsChanged();
+  }
+
+  static Future<Null> deleteAllForms() async {
+    await _initFuture;
+    await for (FileSystemEntity f in _formsDir.list()) {
+      f.delete(recursive: true);
+    }
+    _formsChanged();
+  }
+
+  static Future<Null> deleteAllData() async {
+    await _initFuture;
+    await for (FileSystemEntity f in _dataDir.list()) {
+      f.delete(recursive: true);
+    }
+    await new File("${_dataDir.path}/tracking.csv").create();
+    _dataChanged();
   }
 }
+
+// TODO move all dis
+class FormWithMetadata {
+  final Map<String, dynamic> form;
+  final String uid;
+  final DateTime timestamp;
+  FormWithMetadata(this.form, {this.uid, this.timestamp});
+}
+
+String randomUID() => new Random().nextInt(4294967296).toString();

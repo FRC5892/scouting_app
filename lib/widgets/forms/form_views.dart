@@ -20,8 +20,7 @@ class FRCFormFillView extends StatelessWidget {
     saveCallback(MapKeys.TEAM_NUMBER, teamNumber);
     saveCallback(MapKeys.FORM_TYPE, type.codeName);
     saveCallback(MapKeys.USER_NAME, (await SharedPreferences.getInstance()).getString(MapKeys.USER_NAME));
-    saveCallback(MapKeys.TIMESTAMP, new DateTime.now().millisecondsSinceEpoch);
-    StorageManager.instance.addForm(_saveHolder);
+    StorageManager.addForm(_saveHolder);
     Navigator.pop(context);
   }
 

@@ -13,7 +13,7 @@ class FormsHome extends StatefulWidget implements HomeView {
       new IconButton(icon: new Icon(Icons.add), onPressed: () {
         FRCFormTypeManager.instance.fillForm(context, "testForm", 5892);
       }),
-      new IconButton(icon: new Icon(Icons.more_vert), onPressed: StorageManager.instance.clearForms),
+      new IconButton(icon: new Icon(Icons.more_vert), onPressed: StorageManager.deleteAllForms),
     ];
   }
 
@@ -29,46 +29,44 @@ class _FormsHomeState extends State<FormsHome> {
   StreamSubscription<Map<String, dynamic>> _formMetaSubscription;
 
   _FormsHomeState() {
-    _formMetaSubscription = StorageManager.instance.formsStream.listen(makeFormMeta);
+    _formMetaSubscription = StorageManager.formsChangeNotifier.listen(
+        (_) => StorageManager.getForms().toList().then(makeFormMeta)
+    );
   }
 
-  void makeFormMeta(Map<String, dynamic> formsContent) {
-    List<_FormMetaEntry> newList = formsContent[MapKeys.FORM_LIST_NAME].map(
-      (Map<String, dynamic> input) {
-        FRCFormType type = FRCFormTypeManager.instance.getTypeByCodeName(input[MapKeys.FORM_TYPE]);
-        return new _FormMetaEntry(
-          title: type.title(input[MapKeys.TEAM_NUMBER]),
-          teamNumber: input[MapKeys.TEAM_NUMBER],
-          timestamp: new DateTime.fromMillisecondsSinceEpoch(input[MapKeys.TIMESTAMP]),
-          type: type,
-        );
-      }).toList();
+  // maybe, eventually, upgrade this to something cool. like a StreamBuilder or something.
+  void makeFormMeta(List<FormWithMetadata> forms) {
+    List<_FormMetaEntry> newList = forms.map((f) {
+      FRCFormType type = FRCFormTypeManager.instance.getTypeByCodeName(f.form[MapKeys.FORM_TYPE]);
+      return new _FormMetaEntry(
+        title: type.title(f.form[MapKeys.TEAM_NUMBER]),
+        teamNumber: f.form[MapKeys.TEAM_NUMBER],
+        uid: f.uid,
+        timestamp: f.timestamp,
+        type: type,
+      );
+    }).toList();
     setState(() => formMeta = newList);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (formMeta == null) StorageManager.instance.getForms().then(makeFormMeta);
+    if (formMeta == null) StorageManager.getForms().toList().then(makeFormMeta);
     return new ListView.builder(
-      itemCount: formMeta?.length,
+      itemCount: formMeta?.length ?? 0,
       itemBuilder: (BuildContext context, int index) {
-        try {
-          index = formMeta.length - index - 1; // reverse
-          _FormMetaEntry meta = formMeta[index];
-          return new ListTile(
-            title: new Text(meta.title),
-            trailing: new Text(meta.timestamp.toString()),
-            onTap: () async {
-              Map<String, dynamic> formsContent = await StorageManager.instance.getForms();
-              Map<String, dynamic> json = formsContent[MapKeys.FORM_LIST_NAME][index];
-              Navigator.push(context, new MaterialPageRoute(builder: (_) =>
-                new FRCFormDataView(meta.title, json, meta.type)
-              ));
-            },
-          );
-        } on Object {
-          return null;
-        }
+        index = formMeta.length - index - 1; // reverse
+        _FormMetaEntry meta = formMeta[index];
+        return new ListTile(
+          title: new Text(meta.title),
+          trailing: new Text(meta.timestamp.toString()),
+          onTap: () async {
+            FormWithMetadata f = await StorageManager.getFormWithUid(meta.uid);
+            Navigator.push(context, new MaterialPageRoute(builder: (_) =>
+            new FRCFormDataView(meta.title, f.form, meta.type)
+            ));
+          },
+        );
       },
     );
   }
@@ -83,7 +81,8 @@ class _FormsHomeState extends State<FormsHome> {
 class _FormMetaEntry {
   final String title;
   final int teamNumber;
+  final String uid;
   final DateTime timestamp;
   final FRCFormType type;
-  _FormMetaEntry({this.title, this.teamNumber, this.timestamp, this.type});
+  _FormMetaEntry({this.title, this.teamNumber, this.uid, this.timestamp, this.type});
 }

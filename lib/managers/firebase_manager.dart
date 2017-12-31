@@ -15,22 +15,18 @@ class FirebaseManager {
     FirebaseUser user = await _signIn();
     SharedPreferences sPrefs = await SharedPreferences.getInstance();
     String teamCode = sPrefs.getString(MapKeys.TEAM_CODE);
-    Map<String, dynamic> forms = await StorageManager.instance.getForms();
-    await Future.wait(forms[MapKeys.FORM_LIST_NAME].map((Map<String, dynamic> form) {
-      CollectionReference colRef = Firestore.instance.collection("data/$teamCode/${form[MapKeys.TEAM_NUMBER]}");
-      return colRef.document(new Random().nextInt(4294967296).toString()).setData(form);
-    }));
-    await StorageManager.instance.clearForms();
+    await for (FormWithMetadata f in StorageManager.getForms()) {
+      CollectionReference colRef = Firestore.instance.collection("data/$teamCode/${f.form[MapKeys.TEAM_NUMBER]}");
+      Map<String, dynamic> form = f.form..[MapKeys.TIMESTAMP] = f.timestamp.millisecondsSinceEpoch;
+      await colRef.document(f.uid).setData(form);
+    }
     await _signOut(user);
   }
 
   Future<Null> getData() async => throw "TODO";
 
   Future<FirebaseUser> _signIn() async {
-    print('FirebaseManager._signIn');
     SharedPreferences sPrefs = await SharedPreferences.getInstance();
-    print("teamCode: ${sPrefs.getString("teamCode")}");
-    print("teamPass: ${sPrefs.getString("teamPass")}");
     FirebaseUser user = await FirebaseAuth.instance.signInAnonymously();
     /*Map<String, dynamic> userData = <String, dynamic> {
       "teamPass": sPrefs.getString(MapKeys.TEAM_PASS),
