@@ -17,7 +17,8 @@ class FirebaseManager {
     String teamCode = sPrefs.getString(MapKeys.TEAM_CODE);
     await for (FormWithMetadata f in StorageManager.getForms()) {
       CollectionReference colRef = Firestore.instance.collection("data/$teamCode/${f.form[MapKeys.TEAM_NUMBER]}");
-      f.form[MapKeys.TIMESTAMP] = f.timestamp.millisecondsSinceEpoch;
+      f.form..[MapKeys.TIMESTAMP] = f.timestamp.millisecondsSinceEpoch
+        ..remove(MapKeys.TEAM_NUMBER);
       await colRef.document(f.uid).setData(f.form);
     }
     await StorageManager.deleteAllForms();
