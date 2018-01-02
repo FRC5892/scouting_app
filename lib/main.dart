@@ -7,7 +7,7 @@ export 'managers/firebase_manager.dart';
 export 'widgets/forms/forms.dart';
 export 'widgets/screens/home/home_screen.dart';
 export 'widgets/screens/intro_screen.dart';
-export 'widgets/dialogs/pushing_dialog.dart';
+export 'widgets/dialogs/working_dialogs.dart';
 
 void main() {
   runApp(new MaterialApp(

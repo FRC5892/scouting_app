@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'forms.dart';
 
-export 'fields/integer_field.dart';
+
+import 'package:scouting_app/managers/storage_manager.dart';
+import 'dart:math';export 'fields/integer_field.dart';
 export 'form_fields.dart';
 export 'form_types.dart';
 export 'form_views.dart';
@@ -32,3 +34,12 @@ class FRCFormTypeManager {
 
   FRCFormType getTypeByCodeName(String codeName) => _formTypes[codeName];
 }
+
+class FormWithMetadata {
+  final Map<String, dynamic> form;
+  final String uid;
+  final DateTime timestamp;
+  FormWithMetadata(this.form, {this.uid, this.timestamp});
+}
+
+String randomUID() => new Random().nextInt(4294967296).toString();

@@ -5,13 +5,13 @@ import 'dart:math';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:scouting_app/main.dart';
+import 'package:csv/csv.dart';
 
 class StorageManager {
   static final Future<Null> _initFuture = _init();
 
   static Directory _formsDir;
   static Directory _dataDir;
-  // the analyzer is complaining that i need to close these... when?
   static StreamController<Null> _formsChangeController = new StreamController<Null>.broadcast();
   static StreamController<Null> _dataChangeController = new StreamController<Null>.broadcast();
 
@@ -57,9 +57,16 @@ class StorageManager {
 
   static Future<List<int>> getTrackedTeams() async {
     await _initFuture;
-    return (await new File("${_dataDir.path}/tracking.csv").readAsString())
-        .split(',').map(int.parse);
-    // remember that there is a good package out there if the csv gets any more involved.
+    String csvStr = await new File("${_dataDir.path}/tracking.csv").readAsString();
+    List<List<int>> csv = const CsvToListConverter().convert(csvStr);
+    return csv[0];
+  }
+
+  static Future<DateTime> getLastPullTimestamp() async {
+    await _initFuture;
+    String csvStr = await new File("${_dataDir.path}/tracking.csv").readAsString();
+    List<List<int>> csv = const CsvToListConverter().convert(csvStr);
+    return new DateTime.fromMillisecondsSinceEpoch(csv.length > 1 ? csv[1] : 0);
   }
 
   static Stream<Map<String, dynamic>> getDataForTeam(int teamNumber) async* {
@@ -81,6 +88,12 @@ class StorageManager {
     _formsChanged();
   }
 
+  static Future<Null> addData(Map<String, dynamic> data, String uid) async {
+    await _initFuture;
+    await new File("${_dataDir.path}/${data[MapKeys.TEAM_NUMBER]}/$uid.json")
+      .writeAsString(JSON.encode(data..remove(MapKeys.TEAM_NUMBER)), flush: true);
+  }
+
   static Future<Null> deleteAllForms() async {
     await _initFuture;
     await for (FileSystemEntity f in _formsDir.list()) {
@@ -98,13 +111,3 @@ class StorageManager {
     _dataChanged();
   }
 }
-
-// TODO move all dis
-class FormWithMetadata {
-  final Map<String, dynamic> form;
-  final String uid;
-  final DateTime timestamp;
-  FormWithMetadata(this.form, {this.uid, this.timestamp});
-}
-
-String randomUID() => new Random().nextInt(4294967296).toString();
