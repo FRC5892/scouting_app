@@ -12,8 +12,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final FormsHome forms = new FormsHome();
-  final DataHome data = new DataHome();
+  final HomeView forms = new FormsHome();
+  final HomeView data = new DataHome();
 
   int index = 0;
 

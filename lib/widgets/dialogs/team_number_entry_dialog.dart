@@ -5,6 +5,14 @@ import 'package:flutter/material.dart';
 class TeamNumberEntryDialog extends StatelessWidget {
   final TextEditingController _controller = new TextEditingController();
 
+  int intParseOrNull(String input) {
+    try {
+      return int.parse(input);
+    } on Object {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return new SimpleDialog(
@@ -16,7 +24,8 @@ class TeamNumberEntryDialog extends StatelessWidget {
             controller: _controller,
             textAlign: TextAlign.right,
             keyboardType: TextInputType.number,
-            onSubmitted: Navigator.of(context).pop,
+            autofocus: true,
+            onSubmitted: (input) => Navigator.of(context).pop(intParseOrNull(input)),
           ),
         )
       ]

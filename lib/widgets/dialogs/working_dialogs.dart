@@ -12,7 +12,7 @@ class WorkingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    work().then(Navigator.of(context).pop).catchError(Navigator.of(context).pop);
+    work().whenComplete(Navigator.of(context).pop);
     return new SimpleDialog(
       children: <Widget>[
         new Row(

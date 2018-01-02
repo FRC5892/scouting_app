@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:scouting_app/main.dart';
@@ -58,15 +57,40 @@ class StorageManager {
   static Future<List<int>> getTrackedTeams() async {
     await _initFuture;
     String csvStr = await new File("${_dataDir.path}/tracking.csv").readAsString();
+    print('StorageManager.getTrackedTeams');
+    print(csvStr);
     List<List<int>> csv = const CsvToListConverter().convert(csvStr);
-    return csv[0];
+    try {
+      return csv[0]..removeWhere((o) => o is! int);
+    } on RangeError {
+      return <int> [];
+    }
+  }
+
+  static Future<Null> setTrackedTeams(List<int> track) async {
+    File csvFile = new File("${_dataDir.path}/tracking.csv");
+    List<List<int>> csv = const CsvToListConverter().convert(await csvFile.readAsString());
+    if (csv.length < 2) csv..length = 2..[0] = track;
+    else csv[0] = track;
+    String csvStr = const ListToCsvConverter().convert(csv);
+    print('StorageManager.setTrackedTeams');
+    print(csvStr);
+    await csvFile.writeAsString(const ListToCsvConverter().convert(csv), flush: true);
   }
 
   static Future<DateTime> getLastPullTimestamp() async {
     await _initFuture;
     String csvStr = await new File("${_dataDir.path}/tracking.csv").readAsString();
     List<List<int>> csv = const CsvToListConverter().convert(csvStr);
-    return new DateTime.fromMillisecondsSinceEpoch(csv.length > 1 ? csv[1] : 0);
+    return new DateTime.fromMillisecondsSinceEpoch(csv.length > 1 ? csv[1][0] : 0);
+  }
+
+  static Future<Null> setLastPullTimestamp(DateTime timestamp) async {
+    File csvFile = new File("${_dataDir.path}/tracking.csv");
+    List<List<int>> csv = const CsvToListConverter().convert(await csvFile.readAsString());
+    if (csv.length < 2) csv..length = 2..[1] = <int> [timestamp.millisecondsSinceEpoch];
+    else csv[1][0] = timestamp.millisecondsSinceEpoch;
+    await csvFile.writeAsString(const ListToCsvConverter().convert(csv), flush: true);
   }
 
   static Stream<Map<String, dynamic>> getDataForTeam(int teamNumber) async* {
@@ -88,18 +112,31 @@ class StorageManager {
     _formsChanged();
   }
 
-  static Future<Null> addData(Map<String, dynamic> data, String uid) async {
+  static Future<Null> addData(Map<String, dynamic> data, int teamNumber, String uid) async {
     await _initFuture;
-    await new File("${_dataDir.path}/${data[MapKeys.TEAM_NUMBER]}/$uid.json")
-      .writeAsString(JSON.encode(data..remove(MapKeys.TEAM_NUMBER)), flush: true);
+    File dataFile = new File("${_dataDir.path}/$teamNumber/$uid.json");
+    await dataFile.create(recursive: true);
+    await dataFile.writeAsString(JSON.encode(data), flush: true);
+    _dataChanged();
+  }
+
+  static Future<Null> deleteFormWithUid(String uid) async {
+    await _initFuture;
+    await new File("${_formsDir.path}/$uid.json").delete();
+    _formsChanged();
   }
 
   static Future<Null> deleteAllForms() async {
     await _initFuture;
-    await for (FileSystemEntity f in _formsDir.list()) {
-      f.delete(recursive: true);
-    }
+    await _formsDir.delete(recursive: true);
+    await _formsDir.create();
     _formsChanged();
+  }
+
+  static Future<Null> deleteDataForTeam(int teamNumber) async {
+    await _initFuture;
+    await new Directory("${_dataDir.path}/$teamNumber").delete(recursive: true);
+    _dataChanged();
   }
 
   static Future<Null> deleteAllData() async {

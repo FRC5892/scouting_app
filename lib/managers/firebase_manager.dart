@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:scouting_app/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,7 +16,7 @@ class FirebaseManager {
     String teamCode = sPrefs.getString(MapKeys.TEAM_CODE);
     await for (FormWithMetadata f in StorageManager.getForms()) {
       CollectionReference colRef = Firestore.instance.collection("data/$teamCode/${f.form[MapKeys.TEAM_NUMBER]}");
-      f.form..[MapKeys.TIMESTAMP] = f.timestamp.millisecondsSinceEpoch
+      f.form..[MapKeys.TIMESTAMP] = (f.timestamp.millisecondsSinceEpoch / 1000).truncate()
         ..remove(MapKeys.TEAM_NUMBER);
       await colRef.document(f.uid).setData(f.form);
     }
@@ -37,23 +36,26 @@ class FirebaseManager {
 
     Iterable<Future> finished = teamNumbers.map((teamNumber) {
       Query query = teamDocRef.getCollection(teamNumber.toString())
-          .where(MapKeys.TIMESTAMP, isGreaterThan: lastPull);
-      return query.snapshots.first..then(_saveDataFromSnapshot);
+          .where(MapKeys.TIMESTAMP, isGreaterThan: (lastPull / 1000).truncate());
+      return query.snapshots.first..then(_saveDataFromSnapshotCallback(teamNumber));
     });
     await Future.wait(finished);
 
+    await StorageManager.setLastPullTimestamp(new DateTime.now());
     await _signOut(user);
   }
 
-  void _saveDataFromSnapshot(QuerySnapshot snapshot) {
-    snapshot.documents.forEach((doc) {
-      print("found a document: ${doc.data}");
-      StorageManager.addData(doc.data, doc.documentID);
-    });
+  Function _saveDataFromSnapshotCallback(int teamNumber) {
+    return (QuerySnapshot snapshot) {
+      snapshot.documents.forEach((doc) {
+        print("found a $teamNumber document: ${doc.data}");
+        StorageManager.addData(doc.data..remove(MapKeys.TIMESTAMP), teamNumber, doc.documentID);
+      });
+    };
   }
 
   Future<FirebaseUser> _signIn() async {
-    SharedPreferences sPrefs = await SharedPreferences.getInstance();
+    //SharedPreferences sPrefs = await SharedPreferences.getInstance();
     FirebaseUser user = await FirebaseAuth.instance.signInAnonymously();
     /*Map<String, dynamic> userData = <String, dynamic> {
       "teamPass": sPrefs.getString(MapKeys.TEAM_PASS),
