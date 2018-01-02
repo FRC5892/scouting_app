@@ -4,7 +4,8 @@ import 'forms.dart';
 
 
 import 'package:scouting_app/managers/storage_manager.dart';
-import 'dart:math';export 'fields/integer_field.dart';
+import 'dart:math';
+export 'fields/integer_field.dart';
 export 'form_fields.dart';
 export 'form_types.dart';
 export 'form_views.dart';

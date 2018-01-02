@@ -23,7 +23,7 @@ class WorkingDialog extends StatelessWidget {
             ),
             new Container(
               padding: new EdgeInsets.symmetric(horizontal: 20.0),
-              child: new Text("Pushing to Firebase..."),
+              child: new Text(text),
             ),
           ],
         )

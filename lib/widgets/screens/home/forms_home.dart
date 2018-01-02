@@ -10,8 +10,11 @@ class FormsHome extends StatefulWidget implements HomeView {
       new IconButton(icon: new Icon(Icons.cloud_upload), onPressed: () =>
         showDialog(context: context, barrierDismissible: false, child: new FirebasePushDialog()) // TODO handle errors
       ),
-      new IconButton(icon: new Icon(Icons.add), onPressed: () {
-        FRCFormTypeManager.instance.fillForm(context, "testForm", 5892);
+      new IconButton(icon: new Icon(Icons.add), onPressed: () async {
+        try {
+          int teamNumber = int.parse(await showDialog(context: context, child: new TeamNumberEntryDialog()));
+          FRCFormTypeManager.instance.fillForm(context, "testForm", teamNumber);
+        } on Object {}
       }),
       new IconButton(icon: new Icon(Icons.more_vert), onPressed: StorageManager.deleteAllForms),
     ];

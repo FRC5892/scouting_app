@@ -21,8 +21,6 @@ class _IntegerFieldFill extends StatefulWidget {
 class _IntegerFieldFillState extends State<_IntegerFieldFill> {
   final TextEditingController _controller = new TextEditingController(text: "0");
 
-  int cursorPosition;
-
   static const double buttonFontSize = 18.0;
   static const double buttonWidth = 40.0;
 

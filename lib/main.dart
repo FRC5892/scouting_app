@@ -5,6 +5,7 @@ export 'constants.dart';
 export 'managers/storage_manager.dart';
 export 'managers/firebase_manager.dart';
 export 'widgets/forms/forms.dart';
+export 'widgets/dialogs/team_number_entry_dialog.dart';
 export 'widgets/screens/home/home_screen.dart';
 export 'widgets/screens/intro_screen.dart';
 export 'widgets/dialogs/working_dialogs.dart';
