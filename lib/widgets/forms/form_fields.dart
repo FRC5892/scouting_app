@@ -17,7 +17,8 @@ class FRCFormFieldData<T> {
   final FRCFormFieldType<T> type;
   final String jsonKey;
   final String title;
-  FRCFormFieldData(this.type, this.jsonKey, this.title);
+  final NumberCrunchFunc<T> numberCrunchFunc;
+  FRCFormFieldData(this.type, this.jsonKey, this.title, this.numberCrunchFunc);
 
   // convenience methods
   Widget formFill(FRCFormSaveCallback saveCallback) => type.formFill(this, saveCallback);

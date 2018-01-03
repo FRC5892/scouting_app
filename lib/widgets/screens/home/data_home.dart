@@ -61,12 +61,13 @@ class _DataHomeState extends State<DataHome> {
   void initState() {
     super.initState();
     _dataChangeSubscription = StorageManager.dataChangeNotifier.listen(
-        (_) => StorageManager.getTrackedTeams().then((nums) => setState(() => teamNumbers = nums))
+      (_) => StorageManager.getTrackedTeams().then((nums) => setState(() => teamNumbers = nums))
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    if (teamNumbers == null) StorageManager.getTrackedTeams().then((nums) => setState(() => teamNumbers = nums));
     return new ListView.builder(
       itemCount: teamNumbers?.length ?? 0,
       itemBuilder: (BuildContext context, int index) {

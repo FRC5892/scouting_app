@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'forms.dart';
 
-
-import 'package:scouting_app/managers/storage_manager.dart';
 import 'dart:math';
 export 'fields/integer_field.dart';
 export 'form_fields.dart';
 export 'form_types.dart';
 export 'form_views.dart';
 export 'forms/test_form.dart';
+export 'package:scouting_app/data_utils/number_crunching.dart';
 
 class FRCFormTypeManager {
   static final FRCFormTypeManager instance = new FRCFormTypeManager._();

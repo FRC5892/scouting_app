@@ -7,7 +7,7 @@ import 'package:scouting_app/main.dart';
 import 'package:csv/csv.dart';
 
 class StorageManager {
-  static final Future<Null> _initFuture = _init();
+  static Future<Null> _initFuture = _init();
 
   static Directory _formsDir;
   static Directory _dataDir;
@@ -31,6 +31,12 @@ class StorageManager {
         new File("$rootDir/data/tracking.csv").create(),
       ]);
     }
+  }
+
+  static Future<Null> _initDataTrackingFile() async {
+    File trackingFile = new File("${_dataDir.path}/tracking.csv");
+    await trackingFile.create(recursive: true);
+    await trackingFile.writeAsString("\n0\nfalse");
   }
 
   static Stream<FormWithMetadata> getForms() async* {
@@ -72,9 +78,6 @@ class StorageManager {
     List<List<int>> csv = const CsvToListConverter().convert(await csvFile.readAsString());
     if (csv.length < 2) csv..length = 2..[0] = track;
     else csv[0] = track;
-    String csvStr = const ListToCsvConverter().convert(csv);
-    print('StorageManager.setTrackedTeams');
-    print(csvStr);
     await csvFile.writeAsString(const ListToCsvConverter().convert(csv), flush: true);
   }
 

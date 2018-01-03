@@ -11,6 +11,7 @@ export 'widgets/screens/home/home_screen.dart';
 export 'widgets/screens/intro_screen.dart';
 export 'widgets/dialogs/working_dialogs.dart';
 export 'widgets/screens/data/team_tracking_manage_screen.dart';
+export 'data_utils/number_crunching.dart';
 
 void main() {
   runApp(new MaterialApp(
