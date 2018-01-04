@@ -1,3 +1,6 @@
+const String DONE_MESSAGE = "done";
+const String GENERATED_REPORT = "generatedReport";
+
 abstract class MapKeys {
   static const String FORM_LIST_NAME = "forms";
   static const String TRACKING_LIST_NAME = "tracking";

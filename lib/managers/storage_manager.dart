@@ -7,7 +7,7 @@ import 'package:scouting_app/main.dart';
 import 'package:csv/csv.dart';
 
 class StorageManager {
-  static Future<Null> _initFuture = _init();
+  static final Future<Null> _initFuture = _init();
 
   static Directory _formsDir;
   static Directory _dataDir;
@@ -28,7 +28,7 @@ class StorageManager {
       await Future.wait(<Future> [
         _formsDir.create(),
         _dataDir.create(),
-        new File("$rootDir/data/tracking.csv").create(),
+        _initDataTrackingFile(),
       ]);
     }
   }
@@ -36,7 +36,7 @@ class StorageManager {
   static Future<Null> _initDataTrackingFile() async {
     File trackingFile = new File("${_dataDir.path}/tracking.csv");
     await trackingFile.create(recursive: true);
-    await trackingFile.writeAsString("\n0\nfalse");
+    await trackingFile.writeAsString("\r\n0\r\nfalse"); // i think the csv library needs CRLF?
   }
 
   static Stream<FormWithMetadata> getForms() async* {
@@ -63,9 +63,7 @@ class StorageManager {
   static Future<List<int>> getTrackedTeams() async {
     await _initFuture;
     String csvStr = await new File("${_dataDir.path}/tracking.csv").readAsString();
-    print('StorageManager.getTrackedTeams');
-    print(csvStr);
-    List<List<int>> csv = const CsvToListConverter().convert(csvStr);
+    List<List<dynamic>> csv = const CsvToListConverter().convert(csvStr);
     try {
       return csv[0]..removeWhere((o) => o is! int);
     } on RangeError {
@@ -75,8 +73,8 @@ class StorageManager {
 
   static Future<Null> setTrackedTeams(List<int> track) async {
     File csvFile = new File("${_dataDir.path}/tracking.csv");
-    List<List<int>> csv = const CsvToListConverter().convert(await csvFile.readAsString());
-    if (csv.length < 2) csv..length = 2..[0] = track;
+    List<List<dynamic>> csv = const CsvToListConverter().convert(await csvFile.readAsString());
+    if (csv.length < 3) csv..length = 3..[0] = track;
     else csv[0] = track;
     await csvFile.writeAsString(const ListToCsvConverter().convert(csv), flush: true);
   }
@@ -84,28 +82,48 @@ class StorageManager {
   static Future<DateTime> getLastPullTimestamp() async {
     await _initFuture;
     String csvStr = await new File("${_dataDir.path}/tracking.csv").readAsString();
-    List<List<int>> csv = const CsvToListConverter().convert(csvStr);
+    List<List<dynamic>> csv = const CsvToListConverter().convert(csvStr);
     return new DateTime.fromMillisecondsSinceEpoch(csv.length > 1 ? csv[1][0] : 0);
   }
 
   static Future<Null> setLastPullTimestamp(DateTime timestamp) async {
+    await _initFuture;
     File csvFile = new File("${_dataDir.path}/tracking.csv");
-    List<List<int>> csv = const CsvToListConverter().convert(await csvFile.readAsString());
-    if (csv.length < 2) csv..length = 2..[1] = <int> [timestamp.millisecondsSinceEpoch];
+    List<List<dynamic>> csv = const CsvToListConverter().convert(await csvFile.readAsString());
+    if (csv.length < 3) csv..length = 3..[1] = <int> [timestamp.millisecondsSinceEpoch];
     else csv[1][0] = timestamp.millisecondsSinceEpoch;
     await csvFile.writeAsString(const ListToCsvConverter().convert(csv), flush: true);
   }
 
-  static Stream<Map<String, dynamic>> getDataForTeam(int teamNumber) async* {
+  static Stream<FormWithMetadata> getDataForTeam(int teamNumber) async* {
     await _initFuture;
     Directory teamDir = new Directory("${_dataDir.path}/$teamNumber");
     if (await teamDir.exists()) {
       await for (FileSystemEntity f in teamDir.list()) {
-        if (f is File) {
-          yield JSON.decode(await f.readAsString());
+        if (f is File && !f.path.contains(GENERATED_REPORT)) {
+          yield new FormWithMetadata(JSON.decode(await f.readAsString()),
+            uid: f.path.split('/').last.split('.').first,
+            timestamp: await f.lastModified(),
+          );
         }
       }
     }
+  }
+
+  static Future<bool> getCrunchingNumbers() async {
+    await _initFuture;
+    File csvFile = new File("${_dataDir.path}/tracking.csv");
+    List<List<dynamic>> csv = const CsvToListConverter().convert(await csvFile.readAsString());
+    return csv.length > 2 ? csv[2][0] == "true" : false;
+  }
+
+  static Future<Null> setCrunchingNumbers(bool isCrunching) async {
+    await _initFuture;
+    File csvFile = new File("${_dataDir.path}/tracking.csv");
+    List<List<dynamic>> csv = const CsvToListConverter().convert(await csvFile.readAsString());
+    if (csv.length < 3) csv..length = 3..[2] = <bool> [isCrunching];
+    else csv[2][0] = isCrunching;
+    await csvFile.writeAsString(const ListToCsvConverter().convert(csv), flush: true);
   }
 
   static Future<Null> addForm(Map<String, dynamic> form) async {
@@ -147,7 +165,7 @@ class StorageManager {
     await for (FileSystemEntity f in _dataDir.list()) {
       f.delete(recursive: true);
     }
-    await new File("${_dataDir.path}/tracking.csv").create();
+    _initDataTrackingFile();
     _dataChanged();
   }
 }
