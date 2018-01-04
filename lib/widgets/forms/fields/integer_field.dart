@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import '../forms.dart';
 
 class IntegerField extends FRCFormFieldType<int> {
-  const IntegerField() : super( _formFill, _dataView);
+  const IntegerField() : super(formFill: _formFill,
+    dataView: _dataView, dataReport: _dataReport);
 
   static Widget _formFill(FRCFormFieldData<int> data, FRCFormSaveCallback saveCallback) => new _IntegerFieldFill(data, saveCallback);
   static Widget _dataView(FRCFormFieldData<int> data, int value) => new _IntegerFieldView(data, value);
+  static Widget _dataReport(FRCFormFieldData<int> data, String reportValue) => new _IntegerFieldReport(data, reportValue);
 }
 
 class _IntegerFieldFill extends StatefulWidget {
@@ -79,6 +81,20 @@ class _IntegerFieldView extends StatelessWidget {
     return new ListTile(
       title: new Text(data.title),
       trailing: new Text((value ?? "").toString()),
+    );
+  }
+}
+
+class _IntegerFieldReport extends StatelessWidget {
+  final FRCFormFieldData<int> data;
+  final String reportValue;
+  _IntegerFieldReport(this.data, this.reportValue);
+
+  @override
+  Widget build(BuildContext context) {
+    return new ListTile(
+      title: new Text(data.title),
+      trailing: new Text(reportValue),
     );
   }
 }

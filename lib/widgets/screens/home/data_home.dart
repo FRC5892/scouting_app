@@ -96,8 +96,10 @@ class _DataHomeState extends State<DataHome> {
     return new ListView.builder(
       itemCount: teamNumbers?.length ?? 0,
       itemBuilder: (BuildContext context, int index) {
+        int teamNumber = teamNumbers[index];
         return new ListTile(
-          title: new Text(teamNumbers[index].toString()),
+          title: new Text(teamNumber.toString()),
+          onTap: () => Navigator.push(context, new MaterialPageRoute(builder: (_) => new TeamDataViewScreen(teamNumber))),
         );
       },
     );

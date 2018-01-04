@@ -62,3 +62,16 @@ class FRCFormDataView extends StatelessWidget {
     );
   }
 }
+
+// don't put this one in a Scaffold.
+class FRCFormReportView extends StatelessWidget {
+  final Map<String, dynamic> json;
+  final FRCFormType type;
+  FRCFormReportView(this.json, this.type);
+
+  @override
+  Widget build(BuildContext context) {
+    List<dynamic> values = type.fields.map((f) => json[f.jsonKey]).toList();
+    return type.buildReportView(context, values);
+  }
+}

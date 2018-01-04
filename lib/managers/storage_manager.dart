@@ -110,6 +110,14 @@ class StorageManager {
     }
   }
 
+  static Future<Map<String, dynamic>> getReportsForTeam(int teamNumber) async {
+    await _initFuture;
+    if (await getCrunchingNumbers()) throw "Currently generating reports; check back later.";
+    File reportFile = new File("${_dataDir.path}/$teamNumber/$GENERATED_REPORT.json");
+    if (!await reportFile.exists()) throw "This team has no report.";
+    return JSON.decode(await reportFile.readAsString());
+  }
+
   static Future<bool> getCrunchingNumbers() async {
     await _initFuture;
     File csvFile = new File("${_dataDir.path}/tracking.csv");

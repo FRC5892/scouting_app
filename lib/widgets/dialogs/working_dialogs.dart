@@ -3,26 +3,24 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:scouting_app/main.dart';
 
-typedef Future ReturnsFuture(); // why does everything need a goddamn typedef.
-
 class WorkingDialog extends StatelessWidget {
-  final ReturnsFuture work;
+  final Future work;
   final String text;
   WorkingDialog(this.work, this.text);
 
   @override
   Widget build(BuildContext context) {
-    work().whenComplete(Navigator.of(context).pop);
+    work.whenComplete(Navigator.of(context).pop);
     return new SimpleDialog(
       children: <Widget>[
         new Row(
           children: <Widget>[
             new Container(
-              padding: new EdgeInsets.symmetric(horizontal: 10.0),
-              child: new Placeholder(fallbackHeight: 96.2, fallbackWidth: 78.3),
+              padding: new EdgeInsets.all(20.0), // see commit 714db1329b283578a7a3d03b2a1159bf7ae3b4e1 for previous settings
+              child: new CircularProgressIndicator(), // to be replaced... :)
             ),
             new Container(
-              padding: new EdgeInsets.symmetric(horizontal: 20.0),
+              padding: new EdgeInsets.symmetric(horizontal: 5.0),
               child: new Text(text),
             ),
           ],
@@ -33,9 +31,9 @@ class WorkingDialog extends StatelessWidget {
 }
 
 class FirebasePushDialog extends WorkingDialog {
-  FirebasePushDialog() : super(FirebaseManager.instance.pushForms, "Pushing form entries...");
+  FirebasePushDialog() : super(FirebaseManager.instance.pushForms(), "Pushing form entries...");
 }
 
 class FirebasePullDialog extends WorkingDialog {
-  FirebasePullDialog() : super(FirebaseManager.instance.getData, "Getting form data...");
+  FirebasePullDialog() : super(FirebaseManager.instance.getData(), "Getting form data...");
 }

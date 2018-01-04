@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 
 import 'forms.dart';
 
 typedef Widget FRCFormFieldFill<T>(FRCFormFieldData<T> data, FRCFormSaveCallback saveCallback);
 typedef Widget FRCFormFieldView<T>(FRCFormFieldData<T> data, T value);
+typedef Widget FRCFormFieldReport<T>(FRCFormFieldData<T> data, String reportValue);
 
 class FRCFormFieldType<T> {
   final FRCFormFieldFill<T> formFill;
-  // TODO final FRCFormFieldData<T> formEdit;
+  // TODO final FRCFormFieldEdit<T> formEdit;
   final FRCFormFieldView<T> dataView;
+  final FRCFormFieldReport<T> dataReport;
 
-  const FRCFormFieldType(this.formFill, this.dataView);
+  const FRCFormFieldType({@required this.formFill, //@required FRCFormFieldEdit this.formEdit,
+    @required this.dataView, @required this.dataReport});
 }
 
 class FRCFormFieldData<T> {
@@ -23,4 +27,5 @@ class FRCFormFieldData<T> {
   // convenience methods
   Widget formFill(FRCFormSaveCallback saveCallback) => type.formFill(this, saveCallback);
   Widget dataView(T value) => type.dataView(this, value);
+  Widget reportView(String value) => type.dataReport(this, value);
 }

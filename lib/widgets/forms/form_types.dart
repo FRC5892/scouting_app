@@ -24,6 +24,14 @@ class FRCFormType {
     return builder(context, pass);
   }
 
+  Widget buildReportView(BuildContext context, List<String> values) {
+    List<Widget> pass = [];
+    for (int i=0; i<values.length; i++) {
+      pass.add(fields[i].reportView(values[i]));
+    }
+    return builder(context, pass);
+  }
+
   String title(int teamNumber) => "Form for $teamNumber";
 
   static Widget defaultBuilder(BuildContext context, List<Widget> fields) {
