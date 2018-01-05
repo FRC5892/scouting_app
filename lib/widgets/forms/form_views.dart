@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:scouting_app/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';

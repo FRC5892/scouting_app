@@ -1,5 +1,3 @@
-import 'dart:isolate';
-
 typedef String NumberCrunchFunc<T>(Iterable<TimeAssociatedDatum<T>> data);
 
 class TimeAssociatedDatum<T> {
@@ -20,7 +18,9 @@ abstract class NumberCrunchFuncs {
 
   static String mostRecent<T>(Iterable<TimeAssociatedDatum<T>> data) {
     TimeAssociatedDatum<T> mostRecent = new TimeAssociatedDatum(null, new DateTime.fromMillisecondsSinceEpoch(0));
-    data.forEach((tad) {if (tad.timestamp.isAfter(mostRecent.timestamp)) mostRecent = tad;});
+    data.forEach((tad) {
+      if (tad.timestamp.isAfter(mostRecent.timestamp)) mostRecent = tad;
+    });
     return mostRecent.toString();
   }
 }

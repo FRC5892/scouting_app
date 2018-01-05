@@ -11,21 +11,23 @@ class DataHome extends StatefulWidget implements HomeView {
   List<Widget> actions(BuildContext context) {
     return <Widget> [
       new Builder(builder: (BuildContext context) =>
-        new IconButton(icon: new Icon(Icons.cloud_download), onPressed: () => pullAndCrunchNumbers(context))
+        new IconButton(icon: new Icon(Icons.cloud_download), onPressed: () => _pullAndCrunchNumbers(context))
       ),
       new IconButton(icon: new Icon(Icons.search), onPressed: null),
-      new PopupMenuButton<_AppBarPopupOption>(
-        onSelected: (selected) => handleAppBarMenu(context, selected),
-        itemBuilder: (BuildContext context) => const <PopupMenuItem<_AppBarPopupOption>> [
-          const PopupMenuItem<_AppBarPopupOption>(
-            value: _AppBarPopupOption.MANAGE,
-            child: const Text("Manage tracked teams"),
-          ),
-          const PopupMenuItem<_AppBarPopupOption>(
-            value: _AppBarPopupOption.CLEAR,
-            child: const Text("Clear all data"),
-          ),
-        ]
+      new Builder(builder: (BuildContext context) =>
+        new PopupMenuButton<_AppBarPopupOption>(
+          onSelected: (selected) => handleAppBarMenu(context, selected),
+          itemBuilder: (BuildContext context) => const <PopupMenuItem<_AppBarPopupOption>> [
+            const PopupMenuItem<_AppBarPopupOption>(
+              value: _AppBarPopupOption.MANAGE,
+              child: const Text("Manage tracked teams"),
+            ),
+            const PopupMenuItem<_AppBarPopupOption>(
+              value: _AppBarPopupOption.CLEAR,
+              child: const Text("Clear all data"),
+            ),
+          ]
+        )
       ),
     ];
   }
@@ -37,7 +39,7 @@ class DataHome extends StatefulWidget implements HomeView {
         if (pullNow == null) break; // exited with back button
         if (pullNow) {
           await StorageManager.setLastPullTimestamp(new DateTime.fromMillisecondsSinceEpoch(0));
-          showDialog(context: context, barrierDismissible: false, child: new FirebasePullDialog());
+          _pullAndCrunchNumbers(context);
         } else {
           StorageManager.setLastPullTimestamp(new DateTime.now());
         }
@@ -47,7 +49,7 @@ class DataHome extends StatefulWidget implements HomeView {
     }
   }
 
-  static Future<Null> pullAndCrunchNumbers(BuildContext context) async {
+  static Future<Null> _pullAndCrunchNumbers(BuildContext context) async {
     await showDialog(context: context, barrierDismissible: false, child: new FirebasePullDialog()); // TODO handle errors
     Scaffold.of(context).showSnackBar(new SnackBar(
       content: new Text("Pull successful. Generating reports..."),
@@ -86,13 +88,13 @@ class _DataHomeState extends State<DataHome> {
   void initState() {
     super.initState();
     _dataChangeSubscription = StorageManager.dataChangeNotifier.listen(
-      (_) => StorageManager.getTrackedTeams().then((nums) => setState(() => teamNumbers = nums))
+      (_) => StorageManager.getTrackedTeams().then((nums) => setState(() => teamNumbers = nums..sort()))
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (teamNumbers == null) StorageManager.getTrackedTeams().then((nums) => setState(() => teamNumbers = nums));
+    if (teamNumbers == null) StorageManager.getTrackedTeams().then((nums) => setState(() => teamNumbers = nums..sort()));
     return new ListView.builder(
       itemCount: teamNumbers?.length ?? 0,
       itemBuilder: (BuildContext context, int index) {

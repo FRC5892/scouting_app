@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'package:scouting_app/main.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:scouting_app/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseManager {
@@ -48,8 +49,7 @@ class FirebaseManager {
   Function _saveDataFromSnapshotCallback(int teamNumber) {
     return (QuerySnapshot snapshot) {
       snapshot.documents.forEach((doc) {
-        print("found a $teamNumber document: ${doc.data}");
-        StorageManager.addData(doc.data..remove(MapKeys.TIMESTAMP), teamNumber, doc.documentID);
+        StorageManager.addData(doc.data..[MapKeys.TIMESTAMP] *= 1000, teamNumber, doc.documentID);
       });
     };
   }

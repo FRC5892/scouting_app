@@ -26,7 +26,7 @@ class _TTMScreenState extends State<TeamTrackingManagementScreen> {
   Future<Null> submitExitHandler(BuildContext context) async {
     if (!await showDialog(context: context, child: const YesNoAlertDialog(
       title: "Confirm changes?",
-      subtitle: "All data of any removed teams will be deleted from your device.",
+      content: "All data and reports for any removed teams will be deleted from your device.",
       yesOption: "CONFIRM",
       noOption: "CANCEL",
     ))) return;
@@ -35,7 +35,7 @@ class _TTMScreenState extends State<TeamTrackingManagementScreen> {
     StorageManager.setTrackedTeams(tracking.toList());
     Navigator.pop(context, await showDialog(context: context, child: const YesNoAlertDialog(
       title: "Pull existing data?",
-      subtitle: "If you choose \"No,\" only data entered after the present moment will be pulled.",
+      content: "If you choose \"No,\" only data entered after the present moment will be pulled.",
     ))); // TODO allow picking a time
   }
 

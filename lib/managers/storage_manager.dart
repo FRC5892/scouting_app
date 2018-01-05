@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:scouting_app/main.dart';
-import 'package:csv/csv.dart';
 
 class StorageManager {
   static final Future<Null> _initFuture = _init();
@@ -101,9 +101,10 @@ class StorageManager {
     if (await teamDir.exists()) {
       await for (FileSystemEntity f in teamDir.list()) {
         if (f is File && !f.path.contains(GENERATED_REPORT)) {
-          yield new FormWithMetadata(JSON.decode(await f.readAsString()),
+          Map<String, dynamic> json = JSON.decode(await f.readAsString());
+          yield new FormWithMetadata(json,
             uid: f.path.split('/').last.split('.').first,
-            timestamp: await f.lastModified(),
+            timestamp: new DateTime.fromMillisecondsSinceEpoch(json[MapKeys.TIMESTAMP]),
           );
         }
       }

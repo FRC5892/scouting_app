@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:scouting_app/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // TODO handle getting teamCode, teamPass, userName
 class IntroScreen extends StatelessWidget {

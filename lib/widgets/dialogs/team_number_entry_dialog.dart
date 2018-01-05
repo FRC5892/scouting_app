@@ -1,4 +1,3 @@
-import 'package:scouting_app/main.dart';
 import 'package:flutter/material.dart';
 
 // TODO move upwards on the screen (potentially respond to keyboard)

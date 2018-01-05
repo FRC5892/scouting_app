@@ -27,8 +27,8 @@ android {
         applicationId "org.usfirst.frc.team5892.scoutingapp"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 2
-        versionName "not even in alpha yet bruh"
+        versionCode 3
+        versionName "v0.5.8-alpha"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -51,7 +51,7 @@ flutter {
 dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test:rules:3.0.1'
+    //androidTestImplementation 'com.android.support.test:rules:3.0.1' // gradle can't find this and I'm not using it.
 }
 
 apply plugin: 'com.google.gms.google-services'
