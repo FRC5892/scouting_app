@@ -23,4 +23,10 @@ abstract class NumberCrunchFuncs {
     });
     return mostRecent.toString();
   }
+
+  static String percentage(Iterable<TimeAssociatedDatum<bool>> data) {
+    List<TimeAssociatedDatum<bool>> asList = data.toList();
+    double ratio = asList.where((tad) => tad.datum).length / asList.length;
+    return "${(ratio*100).round()}%";
+  }
 }
