@@ -13,7 +13,7 @@ class FRCFormFieldType<T> {
   final FRCFormFieldView<T> dataView;
   final FRCFormFieldReport<T> dataReport;
 
-  const FRCFormFieldType({@required this.formFill, //@required FRCFormFieldEdit this.formEdit,
+  const FRCFormFieldType({@required this.formFill, //@required this.formEdit,
     @required this.dataView, @required this.dataReport});
 }
 

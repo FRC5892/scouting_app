@@ -12,10 +12,27 @@ class FormsHome extends StatefulWidget implements HomeView {
       new IconButton(icon: new Icon(Icons.cloud_upload), onPressed: () =>
         showDialog(context: context, barrierDismissible: false, child: new FirebasePushDialog()) // TODO handle errors
       ),
-      new IconButton(icon: new Icon(Icons.add), onPressed: () async {
-        int teamNumber = await showDialog(context: context, child: new TeamNumberEntryDialog());
-        if (teamNumber != null) FRCFormTypeManager.instance.fillForm(context, "testForm", teamNumber);
-      }),
+      new PopupMenuButton<String>(
+        icon: new Icon(Icons.add),
+        onSelected: (t) async {
+          int teamNumber = await showDialog(context: context, child: new TeamNumberEntryDialog());
+          if (teamNumber != null) FRCFormTypeManager.instance.fillForm(context, t, teamNumber);
+        },
+        itemBuilder: (_) => const <PopupMenuItem<String>> [
+          const PopupMenuItem(
+            value: "testForm",
+            child: const Text("Test Form"),
+          ),
+          const PopupMenuItem(
+            child: const Text("Pit Interview"),
+            enabled: false,
+          ),
+          const PopupMenuItem(
+            child: const Text("Match Report"),
+            enabled: false,
+          ),
+        ],
+      ),
       new IconButton(icon: new Icon(Icons.more_vert), onPressed: StorageManager.deleteAllForms),
     ];
   }
@@ -80,13 +97,13 @@ class _FormsHomeState extends State<FormsHome> {
               new Text(meta.timestamp.toString().substring(0, meta.timestamp.toString().length - 7)),
               new PopupMenuButton<_FormPopupMenuAction>(
                 onSelected: popupMenuHandler(index),
-                itemBuilder: (BuildContext context) => const <PopupMenuItem<_FormPopupMenuAction>> [
-                  const PopupMenuItem<_FormPopupMenuAction>(
+                itemBuilder: (_) => const <PopupMenuItem<_FormPopupMenuAction>> [
+                  const PopupMenuItem(
                     value: _FormPopupMenuAction.EDIT,
                     child: const Text("Edit"),
                     enabled: false,
                   ),
-                  const PopupMenuItem<_FormPopupMenuAction>(
+                  const PopupMenuItem(
                     value: _FormPopupMenuAction.DELETE,
                     child: const Text("Delete"),
                   ),

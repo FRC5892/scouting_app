@@ -18,11 +18,11 @@ class DataHome extends StatefulWidget implements HomeView {
         new PopupMenuButton<_AppBarPopupOption>(
           onSelected: (selected) => handleAppBarMenu(context, selected),
           itemBuilder: (BuildContext context) => const <PopupMenuItem<_AppBarPopupOption>> [
-            const PopupMenuItem<_AppBarPopupOption>(
+            const PopupMenuItem(
               value: _AppBarPopupOption.MANAGE,
               child: const Text("Manage tracked teams"),
             ),
-            const PopupMenuItem<_AppBarPopupOption>(
+            const PopupMenuItem(
               value: _AppBarPopupOption.CLEAR,
               child: const Text("Clear all data"),
             ),
