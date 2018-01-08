@@ -31,7 +31,6 @@ ReceivePort spawnNumberCrunchingIsolate(Map<int, List<FormWithMetadata>> data) {
 void crunchNumbers(NumberCrunchInitMessage message) {
   SendPort reportPort = message.reportPort;
   message.data.forEach((teamNumber, formData) {
-    print(teamNumber);
     Map<String, List<FormWithMetadata>> sepData = new Map();
     formData.forEach((data) {
       sepData..putIfAbsent(data.form[MapKeys.FORM_TYPE], () => [])

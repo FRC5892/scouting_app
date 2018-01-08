@@ -11,27 +11,22 @@ class BooleanField extends FRCFormFieldType<bool> {
   static Widget _dataReport(FRCFormFieldData<bool> data, String reportValue) => new _BooleanFieldReport(data, reportValue);
 }
 
-class _BooleanFieldFill extends StatefulWidget {
+class _BooleanFieldFill extends StatelessWidget {
   final FRCFormFieldData<bool> data;
   final FRCFormSaveCallback saveCallback;
   _BooleanFieldFill(this.data, this.saveCallback);
 
   @override
-  _BooleanFieldFillState createState() => new _BooleanFieldFillState();
-}
-
-class _BooleanFieldFillState extends State<_BooleanFieldFill> {
-  @override
   Widget build(BuildContext context) {
     return new ListTile(
-      title: new Text(widget.data.title),
+      title: new Text(data.title),
       trailing: new FormField<bool>(
         initialValue: false,
         builder: (FormFieldState<bool> field) => new Checkbox(
           value: field.value,
           onChanged: field.onChanged,
         ),
-        onSaved: (bool value) => widget.saveCallback(widget.data.jsonKey, value),
+        onSaved: (bool value) => saveCallback(data.jsonKey, value),
       ),
     );
   }

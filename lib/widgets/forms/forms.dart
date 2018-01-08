@@ -8,6 +8,7 @@ export 'package:scouting_app/data_utils/number_crunching.dart';
 
 export 'fields/boolean_field.dart';
 export 'fields/integer_field.dart';
+export 'fields/text_field.dart';
 export 'form_fields.dart';
 export 'form_types.dart';
 export 'form_views.dart';
