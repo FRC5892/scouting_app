@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'forms.dart';
 
 export 'package:scouting_app/data_utils/number_crunching.dart';
+export 'package:scouting_app/constants.dart';
 
 export 'fields/boolean_field.dart';
 export 'fields/integer_field.dart';

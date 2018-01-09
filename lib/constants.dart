@@ -1,5 +1,7 @@
 const String DONE_MESSAGE = "done";
 const String GENERATED_REPORT = "generatedReport";
+const String REPORT_LIST_PREFIX = "%LIST%";
+const String REPORT_LIST_SEP = "%%:%";
 
 abstract class MapKeys {
   static const String FORM_LIST_NAME = "forms";

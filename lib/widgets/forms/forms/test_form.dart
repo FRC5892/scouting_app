@@ -9,6 +9,7 @@ class TestForm extends FRCFormType {
       new FRCFormFieldData<int>(const IntegerField(), "field3", "Field 3", NumberCrunchFuncs.mostRecent),
       new FRCFormFieldData<bool>(const BooleanField(), "fieldBool", "Boolean Field", NumberCrunchFuncs.percentage),
       new FRCFormFieldData<String>(const FRCTextField(), "fieldText", "Text Field", NumberCrunchFuncs.mostRecent),
+      new FRCFormFieldData<String>(const FRCTextField(), "fieldText2", "Text Field 2", NumberCrunchFuncs.dataList),
     ],
   );
 

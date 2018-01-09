@@ -7,6 +7,7 @@ export 'data_utils/number_crunching_isolate.dart';
 export 'managers/firebase_manager.dart';
 export 'managers/storage_manager.dart';
 export 'widgets/dialogs/team_number_entry_dialog.dart';
+export 'widgets/dialogs/text_alert_dialog.dart';
 export 'widgets/dialogs/working_dialogs.dart';
 export 'widgets/dialogs/yesno_alert_dialog.dart';
 export 'widgets/forms/forms.dart';

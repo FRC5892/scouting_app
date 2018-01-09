@@ -1,11 +1,14 @@
+import '../constants.dart';
+
 typedef String NumberCrunchFunc<T>(Iterable<TimeAssociatedDatum<T>> data);
 
-class TimeAssociatedDatum<T> {
+class TimeAssociatedDatum<T> implements Comparable<TimeAssociatedDatum> {
   final T datum; // definitely can be null
   final DateTime timestamp;
   TimeAssociatedDatum(this.datum, this.timestamp);
 
   String toString() => datum.toString();
+  int compareTo(TimeAssociatedDatum other) => timestamp.millisecondsSinceEpoch - other.timestamp.millisecondsSinceEpoch;
 }
 
 abstract class NumberCrunchFuncs {
@@ -32,5 +35,10 @@ abstract class NumberCrunchFuncs {
     } on UnsupportedError {
       return "No data";
     }
+  }
+
+  static String dataList<T>(Iterable<TimeAssociatedDatum<T>> data) {
+    List<TimeAssociatedDatum<T>> asList = data.where((tad) => tad.datum != null).toList()..sort();
+    return "$REPORT_LIST_PREFIX${asList.join(REPORT_LIST_SEP)}";
   }
 }
