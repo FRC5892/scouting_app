@@ -26,9 +26,7 @@ class _BooleanFieldFillState extends State<_BooleanFieldFill> {
   @override
   void initState() {
     super.initState();
-    print('_BooleanFieldFillState.initState: ${widget.data.jsonKey}');
     initValue = FRCFormFillView.of(context)?.getValue(widget.data.jsonKey) ?? false;
-    print(initValue);
   }
 
   @override

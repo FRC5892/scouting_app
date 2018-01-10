@@ -77,6 +77,7 @@ class StorageManager {
     if (csv.length < 3) csv..length = 3..[0] = track;
     else csv[0] = track;
     await csvFile.writeAsString(const ListToCsvConverter().convert(csv), flush: true);
+    _dataChanged();
   }
 
   static Future<DateTime> getLastPullTimestamp() async {
@@ -174,7 +175,6 @@ class StorageManager {
     await for (FileSystemEntity f in _dataDir.list()) {
       f.delete(recursive: true);
     }
-    _initDataTrackingFile();
-    _dataChanged();
+    _initDataTrackingFile().then((_) => _dataChanged());
   }
 }

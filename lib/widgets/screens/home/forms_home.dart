@@ -29,7 +29,16 @@ class FormsHome extends StatefulWidget implements HomeView {
           ),
         ],
       ),
-      new IconButton(icon: new Icon(Icons.more_vert), onPressed: StorageManager.deleteAllForms),
+      new PopupMenuButton<VoidCallback>(
+        icon: new Icon(Icons.more_vert),
+        onSelected: (cb) => cb(),
+        itemBuilder: (_) => const <PopupMenuItem<VoidCallback>> [
+          const PopupMenuItem(
+            value: StorageManager.deleteAllForms,
+            child: const Text("Clear all forms"),
+          ),
+        ],
+      ),
     ];
   }
 

@@ -25,14 +25,11 @@ class FRCFormFillViewState extends State<FRCFormFillView> {
 
   dynamic getValue(String key) {
     dynamic ret = _saveHolder[key];
-    print('FRCFormFillView.getValue($key) => $ret');
     return ret;
   }
   
   void saveCallback(String key, dynamic value) {
-    print('FRCFormFillView.saveCallback($key, $value)');
     _saveHolder[key] = value;
-    print("_saveHolder[$key] = ${_saveHolder[key]}");
   }
 
   Future<Null> submitCallback(BuildContext context) async {

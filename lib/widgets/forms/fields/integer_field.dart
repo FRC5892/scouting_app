@@ -32,9 +32,7 @@ class _IntegerFieldFillState extends State<_IntegerFieldFill> {
   @override
   void initState() {
     super.initState();
-    print('_IntegerFieldFillState.initState: ${widget.data.jsonKey}');
     initValue = FRCFormFillView.of(context)?.getValue(jsonKey) ?? 0;
-    print(initValue);
     _controller.text = initValue.toString();
   }
 
@@ -65,7 +63,6 @@ class _IntegerFieldFillState extends State<_IntegerFieldFill> {
                 textAlign: TextAlign.right,
                 keyboardType: TextInputType.number,
                 onChanged: (String out) {
-                  print("int change listener : ${widget.data.jsonKey} : $out");
                   int value = int.parse(out);
                   field.onChanged(value);
                   widget.saveCallback(jsonKey, value);

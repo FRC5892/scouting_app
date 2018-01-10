@@ -30,12 +30,9 @@ class _TextFieldFillState extends State<_TextFieldFill> {
   @override
   void initState() {
     super.initState();
-    print('_TextFieldFillState.initState: ${widget.data.jsonKey}');
     initValue = FRCFormFillView.of(context)?.getValue(widget.data.jsonKey) ?? "";
-    print(initValue);
     _controller..text = initValue
       ..addListener(() {
-        print('text controller listener : ${widget.data.jsonKey} : ${_controller.text}');
         widget.saveCallback(widget.data.jsonKey, _controller.text);
       });
   }
