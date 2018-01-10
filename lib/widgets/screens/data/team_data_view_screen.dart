@@ -91,8 +91,8 @@ class _TeamReportsViewState extends State<TeamReportsView> {
       child: new ExpansionPanelList(
         expansionCallback: (int panelIndex, bool isExpanded) => setState(() => expandedIndex = isExpanded ? -1 : panelIndex),
         children: <ExpansionPanel>[
-          _makeReportPanel("Test Report", "testForm", expandedIndex == 0, widget.reports),
-          _makeReportPanel("Test Report 2: Electric Boogaloo", "testForm", expandedIndex == 1, widget.reports)
+          _makeReportPanel("Pit Interviews", "pitForm", expandedIndex == 0, widget.reports),
+          _makeReportPanel("Match Statistics", "matchForm", expandedIndex == 1, widget.reports)
         ],
       ),
     );

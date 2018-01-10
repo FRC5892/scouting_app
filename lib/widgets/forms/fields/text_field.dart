@@ -14,23 +14,51 @@ class FRCTextField extends FRCFormFieldType<String> {
   }
 }
 
-class _TextFieldFill extends StatelessWidget {
+class _TextFieldFill extends StatefulWidget {
   final FRCFormFieldData<String> data;
   final FRCFormSaveCallback saveCallback;
   _TextFieldFill(this.data, this.saveCallback);
 
   @override
+  _TextFieldFillState createState() => new _TextFieldFillState();
+}
+
+class _TextFieldFillState extends State<_TextFieldFill> {
+  final TextEditingController _controller = new TextEditingController();
+  String initValue;
+
+  @override
+  void initState() {
+    super.initState();
+    print('_TextFieldFillState.initState: ${widget.data.jsonKey}');
+    initValue = FRCFormFillView.of(context)?.getValue(widget.data.jsonKey) ?? "";
+    print(initValue);
+    _controller..text = initValue
+      ..addListener(() {
+        print('text controller listener : ${widget.data.jsonKey} : ${_controller.text}');
+        widget.saveCallback(widget.data.jsonKey, _controller.text);
+      });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new ListTile(
-      title: new Text(data.title),
+      title: new Text(widget.data.title),
       trailing: new Container(
         constraints: new BoxConstraints(maxWidth: 200.0),
         child: new TextFormField(
-          initialValue: "",
-          onSaved: (String value) => saveCallback(data.jsonKey, value),
+          initialValue: initValue,
+          controller: _controller,
+          onSaved: (String value) => widget.saveCallback(widget.data.jsonKey, value),
         ),
-      )
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
 
@@ -43,7 +71,7 @@ class _TextFieldView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (value?.length > MAX_CHARS)
+    if (value?.length ?? 0 > MAX_CHARS)
       return new ListTile(
         title: new Text(data.title),
         trailing: new GestureDetector(

@@ -14,6 +14,8 @@ export 'form_fields.dart';
 export 'form_types.dart';
 export 'form_views.dart';
 export 'forms/test_form.dart';
+export 'forms/pit_form.dart';
+export 'forms/match_form.dart';
 
 class FRCFormTypeManager {
   static final FRCFormTypeManager instance = new FRCFormTypeManager._();
@@ -22,6 +24,8 @@ class FRCFormTypeManager {
 
   FRCFormTypeManager._() {
     _register(new TestForm());
+    _register(new PitForm());
+    _register(new MatchForm());
   }
 
   void _register(FRCFormType formType) {

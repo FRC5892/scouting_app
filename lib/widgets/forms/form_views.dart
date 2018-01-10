@@ -8,22 +8,43 @@ import 'forms.dart';
 
 typedef void FRCFormSaveCallback(String codeName, dynamic value);
 
-class FRCFormFillView extends StatelessWidget {
+class FRCFormFillView extends StatefulWidget {
   final String title;
   final int teamNumber;
   final FRCFormType type;
-  final Map<String, dynamic> _saveHolder = new Map<String, dynamic>();
   FRCFormFillView(this.title, this.teamNumber, this.type);
+
+  @override
+  FRCFormFillViewState createState() => new FRCFormFillViewState();
+
+  static FRCFormFillViewState of(BuildContext context) => context.ancestorStateOfType(const TypeMatcher<FRCFormFillViewState>());
+}
+
+class FRCFormFillViewState extends State<FRCFormFillView> {
+  Map<String, dynamic> _saveHolder = new Map<String, dynamic>();
+
+  dynamic getValue(String key) {
+    dynamic ret = _saveHolder[key];
+    print('FRCFormFillView.getValue($key) => $ret');
+    return ret;
+  }
   
-  void saveCallback(String key, dynamic value) => _saveHolder[key] = value;
+  void saveCallback(String key, dynamic value) {
+    print('FRCFormFillView.saveCallback($key, $value)');
+    _saveHolder[key] = value;
+    print("_saveHolder[$key] = ${_saveHolder[key]}");
+  }
+
   Future<Null> submitCallback(BuildContext context) async {
     Form.of(context).save();
-    saveCallback(MapKeys.TEAM_NUMBER, teamNumber);
-    saveCallback(MapKeys.FORM_TYPE, type.codeName);
+    saveCallback(MapKeys.TEAM_NUMBER, widget.teamNumber);
+    saveCallback(MapKeys.FORM_TYPE, widget.type.codeName);
     saveCallback(MapKeys.USER_NAME, (await SharedPreferences.getInstance()).getString(MapKeys.USER_NAME));
     StorageManager.addForm(_saveHolder);
     Navigator.pop(context);
   }
+
+  static FRCFormFillView of(BuildContext context) => context.ancestorWidgetOfExactType(FRCFormFillView);
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +52,12 @@ class FRCFormFillView extends StatelessWidget {
       autovalidate: true,
       child: new Builder(builder: (BuildContext context) => new Scaffold(
         appBar: new AppBar(
-          title: new Text(title),
+          title: new Text(widget.title),
           actions: <Widget> [
             new IconButton(icon: new Icon(Icons.check), onPressed: () => submitCallback(context),),
           ],
         ),
-        body: type.buildFormFill(context, saveCallback),
+        body: widget.type.buildFormFill(context, saveCallback),
       ),),
     );
   }

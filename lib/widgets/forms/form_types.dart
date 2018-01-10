@@ -36,6 +36,7 @@ class FRCFormType {
 
   static Widget defaultBuilder(BuildContext context, List<Widget> fields) {
     return new ListView(
+      addAutomaticKeepAlives: true,
       children: fields,
     );
   }

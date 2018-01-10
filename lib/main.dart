@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:scouting_app/main.dart';
 
 export 'constants.dart';
@@ -15,6 +16,7 @@ export 'widgets/screens/data/team_data_view_screen.dart';
 export 'widgets/screens/data/team_tracking_manage_screen.dart';
 export 'widgets/screens/home/home_screen.dart';
 export 'widgets/screens/intro_screen.dart';
+export 'widgets/misc/list_header.dart';
 
 void main() {
   //debugPaintSizeEnabled = true; // import the flutter rendering library

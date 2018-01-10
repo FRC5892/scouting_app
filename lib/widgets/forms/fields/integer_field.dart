@@ -21,17 +21,29 @@ class _IntegerFieldFill extends StatefulWidget {
 }
 
 class _IntegerFieldFillState extends State<_IntegerFieldFill> {
-  final TextEditingController _controller = new TextEditingController(text: "0");
+  String get jsonKey => widget.data.jsonKey;
+  final TextEditingController _controller = new TextEditingController();
 
   static const double buttonFontSize = 18.0;
   static const double buttonWidth = 40.0;
+
+  int initValue;
+
+  @override
+  void initState() {
+    super.initState();
+    print('_IntegerFieldFillState.initState: ${widget.data.jsonKey}');
+    initValue = FRCFormFillView.of(context)?.getValue(jsonKey) ?? 0;
+    print(initValue);
+    _controller.text = initValue.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
     return new ListTile(
       title: new Text(widget.data.title),
       trailing: new FormField<int>( // TODO data validation
-        initialValue: 0,
+        initialValue: initValue,
         builder: (FormFieldState<int> field) => new Row(
           children: <Widget>[
             new ConstrainedBox(
@@ -39,8 +51,10 @@ class _IntegerFieldFillState extends State<_IntegerFieldFill> {
               child: new FlatButton(
                 child: const Text("-", style: const TextStyle(fontSize: buttonFontSize)),
                 onPressed: () {
-                  _controller.text = (field.value - 1).toString();
-                  field.onChanged(field.value - 1);
+                  int newValue = field.value - 1;
+                  _controller.text = newValue.toString();
+                  field.onChanged(newValue);
+                  widget.saveCallback(jsonKey, newValue);
                 },
               ),
             ),
@@ -50,7 +64,12 @@ class _IntegerFieldFillState extends State<_IntegerFieldFill> {
                 controller: _controller,
                 textAlign: TextAlign.right,
                 keyboardType: TextInputType.number,
-                onChanged: (String out) => field.onChanged(int.parse(out)),
+                onChanged: (String out) {
+                  print("int change listener : ${widget.data.jsonKey} : $out");
+                  int value = int.parse(out);
+                  field.onChanged(value);
+                  widget.saveCallback(jsonKey, value);
+                },
               ),
             ),
             new ConstrainedBox(
@@ -58,14 +77,16 @@ class _IntegerFieldFillState extends State<_IntegerFieldFill> {
               child: new FlatButton(
                 child: const Text("+", style: const TextStyle(fontSize: buttonFontSize)),
                 onPressed: () {
-                  _controller.text = (field.value + 1).toString();
-                  field.onChanged(field.value + 1);
+                  int newValue = field.value + 1;
+                  _controller.text = newValue.toString();
+                  field.onChanged(newValue);
+                  widget.saveCallback(jsonKey, newValue);
                 },
               ),
             ),
           ],
         ),
-        onSaved: (int value) => widget.saveCallback(widget.data.jsonKey, value),
+        onSaved: (int value) => widget.saveCallback(jsonKey, value),
       ),
     );
   }

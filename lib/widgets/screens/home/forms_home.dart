@@ -20,16 +20,12 @@ class FormsHome extends StatefulWidget implements HomeView {
         },
         itemBuilder: (_) => const <PopupMenuItem<String>> [
           const PopupMenuItem(
-            value: "testForm",
-            child: const Text("Test Form"),
-          ),
-          const PopupMenuItem(
+            value: "pitForm",
             child: const Text("Pit Interview"),
-            enabled: false,
           ),
           const PopupMenuItem(
+            value: "matchForm",
             child: const Text("Match Report"),
-            enabled: false,
           ),
         ],
       ),
