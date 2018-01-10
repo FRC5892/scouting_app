@@ -1,16 +1,28 @@
 # Scouting App (tentative title)
 
-This is FRC team 5892's _extremely work-in-progress_ scouting app. The intent is to create an application that will help scouts organize their data in a manner optimized for the scarce WiFi present at competitions.
+This is FRC team 5892's scouting app. The application is designed to help scouts organize, collate, and summarize their data in the Internet-starved environment of competition.
 
-The application will provide scouts with a set of forms to fill out (pit interviews, matches, etc.), and allow them to be manually synced to a cloud database.
+The application provides scouts with a set of two forms: one for pit interviews and one for matches. Form data is manually pushed and pulled to and from Google Firebase, presumably when your scouting team convenes and a few people turn on their phones' hotspots.
 
-We also would like for other teams to be able to use our app themselves.
+We have not yet released the app on the App Store or Play Store, but it is open source. Feel free to build and customize it yourself. Instructions for compiling the app are below.
 
-Hopefully, we will be able to release both Android and iOS versions.
+The app is cross-compatible between Android and iOS. In order to compile for iOS, you will need a Mac.
 
-### The app won't work when I build it!
-Unfortunately, this is intentional. Because we use Google Firebase, the app is expecting some Firebase config files in specific locations, and we aren't checking them into Git.
+### Instructions to Compile
+1. Install Flutter on the computer. Instructions for Windows, Mac, and Linux are at <https://flutter.io/setup/>.
+2. Clone this repository.
+3. Follow the instructions at [this link](https://codelabs.developers.google.com/codelabs/flutter-firebase/index.html#4) to create a database and add configuration files for whichever platform(s) you need to support. Disregard the "Integrate the FlutterFire package" section and anything below.
 
-If you would like to contribute (team members included), follow the instructions at [this link](https://codelabs.developers.google.com/codelabs/flutter-firebase/index.html#4) to make your own config files for your own database. Make sure your development database has Cloud Firestore enabled.
+#### Building for iOS
+~~Please note that I know very little about iOS development. Don't hesitate to suggest improvements to this.~~
 
-(Actually I don't know the exact degree to which the app will fail to work. Regardless, Firebase is pretty important to it.)
+For each device that you need to install the app on:
+- plug it into your Mac
+- complete the necessary setup in Xcode
+- run `flutter run --release` in the repository root
+
+#### Building for Android
+- run `flutter build apk` in the repository root
+- find the output file at `build/app/outputs/apk/release/app-release.apk`
+- send the file to all of the Android users (email/Google Drive are good for this)
+- have them install it
