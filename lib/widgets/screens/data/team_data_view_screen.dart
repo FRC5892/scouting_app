@@ -10,6 +10,15 @@ class TeamDataViewScreen extends StatelessWidget {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Team $teamNumber Reports"),
+        actions: <Widget> [
+          new IconButton(
+            icon: const Icon(Icons.format_list_bulleted),
+            onPressed: () => Navigator.push(context, new MaterialPageRoute(builder: (_) =>
+              new TeamDataListScreen(teamNumber)
+            )),
+            tooltip: "View individual forms",
+          ),
+        ],
       ),
       body: new Column(
         children: <Widget>[

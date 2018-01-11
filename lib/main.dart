@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:scouting_app/main.dart';
 
 export 'constants.dart';
+export 'misc_functions.dart';
 export 'data_utils/number_crunching.dart';
 export 'data_utils/number_crunching_isolate.dart';
 export 'managers/firebase_manager.dart';
@@ -14,6 +15,7 @@ export 'widgets/dialogs/yesno_alert_dialog.dart';
 export 'widgets/forms/forms.dart';
 export 'widgets/screens/data/team_data_view_screen.dart';
 export 'widgets/screens/data/team_tracking_manage_screen.dart';
+export 'widgets/screens/data/team_data_list_screen.dart';
 export 'widgets/screens/home/home_screen.dart';
 export 'widgets/screens/intro_screen.dart';
 export 'widgets/misc/list_header.dart';

@@ -101,7 +101,7 @@ class _FormsHomeState extends State<FormsHome> {
           title: new Text(meta.title),
           trailing: new Row(
             children: <Widget>[
-              new Text(meta.timestamp.toString().substring(0, meta.timestamp.toString().length - 7)),
+              new Text(dateTimeToReasonableString(meta.timestamp)),
               new PopupMenuButton<_FormPopupMenuAction>(
                 onSelected: popupMenuHandler(index),
                 itemBuilder: (_) => const <PopupMenuItem<_FormPopupMenuAction>> [

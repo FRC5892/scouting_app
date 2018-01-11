@@ -112,6 +112,16 @@ class StorageManager {
     }
   }
 
+  static Future<FormWithMetadata> getDataWithUid(int teamNumber, String uid) async {
+    await _initFuture;
+    File dataFile = new File("${_dataDir.path}/$teamNumber/$uid.json");
+    Map<String, dynamic> json = JSON.decode(await dataFile.readAsString());
+    return new FormWithMetadata(json,
+      uid: uid,
+      timestamp: new DateTime.fromMillisecondsSinceEpoch(json[MapKeys.TIMESTAMP])
+    );
+  }
+
   static Future<Map<String, dynamic>> getReportsForTeam(int teamNumber) async {
     await _initFuture;
     if (await getCrunchingNumbers()) throw "Currently generating reports; check back later.";
