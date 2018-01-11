@@ -40,6 +40,13 @@ class FRCFormTypeManager {
       new FRCFormFillView(type.title(teamNumber), teamNumber, type)
     ));
   }
+  
+  void editForm(BuildContext context, Map<String, dynamic> form, String uid) {
+    FRCFormType type = _formTypes[form[MapKeys.FORM_TYPE]];
+    int teamNumber = form[MapKeys.TEAM_NUMBER];
+    Navigator.push(context, new MaterialPageRoute(builder: (_) =>
+      new FRCFormFillView(type.title(teamNumber), teamNumber, type, form, uid)));
+  }
 
   FRCFormType getTypeByCodeName(String codeName) => _formTypes[codeName];
 }

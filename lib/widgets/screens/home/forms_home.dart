@@ -77,10 +77,12 @@ class _FormsHomeState extends State<FormsHome> {
   }
 
   ValueChanged<_FormPopupMenuAction> popupMenuHandler(int index) {
-    return (action) {
+    return (action) async {
       switch (action) {
         case _FormPopupMenuAction.EDIT:
-          break; // TODO for beta :P
+          FormWithMetadata form = await StorageManager.getFormWithUid(formMeta[index].uid);
+          FRCFormTypeManager.instance.editForm(context, form.form, formMeta[index].uid);
+          break;
         case _FormPopupMenuAction.DELETE:
           StorageManager.deleteFormWithUid(formMeta[index].uid);
       }
@@ -106,7 +108,6 @@ class _FormsHomeState extends State<FormsHome> {
                   const PopupMenuItem(
                     value: _FormPopupMenuAction.EDIT,
                     child: const Text("Edit"),
-                    enabled: false,
                   ),
                   const PopupMenuItem(
                     value: _FormPopupMenuAction.DELETE,

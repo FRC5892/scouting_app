@@ -68,7 +68,7 @@ class _TextFieldView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (value?.length ?? 0 > MAX_CHARS)
+    if ((value?.length ?? 0) > MAX_CHARS)
       return new ListTile(
         title: new Text(data.title),
         trailing: new GestureDetector(

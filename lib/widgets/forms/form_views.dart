@@ -12,7 +12,9 @@ class FRCFormFillView extends StatefulWidget {
   final String title;
   final int teamNumber;
   final FRCFormType type;
-  FRCFormFillView(this.title, this.teamNumber, this.type);
+  final Map<String, dynamic> initValues;
+  final String uid;
+  FRCFormFillView(this.title, this.teamNumber, this.type, [this.initValues, this.uid]);
 
   @override
   FRCFormFillViewState createState() => new FRCFormFillViewState();
@@ -21,7 +23,13 @@ class FRCFormFillView extends StatefulWidget {
 }
 
 class FRCFormFillViewState extends State<FRCFormFillView> {
-  Map<String, dynamic> _saveHolder = new Map<String, dynamic>();
+  Map<String, dynamic> _saveHolder;
+
+  @override
+  void initState() {
+    super.initState();
+    _saveHolder = new Map<String, dynamic>.from(widget.initValues ?? {});
+  }
 
   dynamic getValue(String key) {
     dynamic ret = _saveHolder[key];
@@ -37,7 +45,7 @@ class FRCFormFillViewState extends State<FRCFormFillView> {
     saveCallback(MapKeys.TEAM_NUMBER, widget.teamNumber);
     saveCallback(MapKeys.FORM_TYPE, widget.type.codeName);
     saveCallback(MapKeys.USER_NAME, (await SharedPreferences.getInstance()).getString(MapKeys.USER_NAME));
-    StorageManager.addForm(_saveHolder);
+    StorageManager.addForm(_saveHolder, widget.uid);
     Navigator.pop(context);
   }
 
@@ -58,10 +66,6 @@ class FRCFormFillViewState extends State<FRCFormFillView> {
       ),),
     );
   }
-}
-
-class FRCFormEditView extends StatelessWidget {
-  Widget build(BuildContext context) => throw "TODO";
 }
 
 class FRCFormDataView extends StatelessWidget {

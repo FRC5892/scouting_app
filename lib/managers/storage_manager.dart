@@ -136,9 +136,9 @@ class StorageManager {
     await csvFile.writeAsString(const ListToCsvConverter().convert(csv), flush: true);
   }
 
-  static Future<Null> addForm(Map<String, dynamic> form) async {
+  static Future<Null> addForm(Map<String, dynamic> form, [String uid]) async {
     await _initFuture;
-    String uid = randomUID();
+    uid ??= randomUID();
     await new File("${_formsDir.path}/$uid.json").writeAsString(JSON.encode(form), flush: true);
     _formsChanged();
   }
