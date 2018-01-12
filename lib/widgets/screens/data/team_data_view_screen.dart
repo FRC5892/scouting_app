@@ -27,8 +27,8 @@ class TeamDataViewScreen extends StatelessWidget {
             future: StorageManager.getReportsForTeam(teamNumber),
             builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
               switch (snapshot.connectionState) {
-                case ConnectionState.none: return new Text("Something went wrong.");
-                case ConnectionState.waiting: return new Text("Loading...");
+                case ConnectionState.none: return const Text("Something went wrong.");
+                case ConnectionState.waiting: return const Text("Loading...");
                 default:
                   if (snapshot.hasError) return new Text(snapshot.error);
                   return new TeamReportsView(snapshot.data);
@@ -64,15 +64,15 @@ class TeamNumberHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Container(
-      padding: new EdgeInsets.symmetric(vertical: 5.0, horizontal: 35.0),
+      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 35.0),
       alignment: AlignmentDirectional.centerEnd,
-      constraints: new BoxConstraints(),
+      constraints: const BoxConstraints(),
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           new Container(
-            padding: new EdgeInsets.fromLTRB(0.0, 20.0, 15.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(0.0, 20.0, 15.0, 0.0),
             child: new Text("Team", style: wordTeamStyle(context)),
           ),
           new Text(teamNumber.toString(), style: numberStyle(context)),
@@ -96,7 +96,7 @@ class _TeamReportsViewState extends State<TeamReportsView> {
   @override
   Widget build(BuildContext context) {
     return new Container(
-      padding: new EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(15.0),
       child: new ExpansionPanelList(
         expansionCallback: (int panelIndex, bool isExpanded) => setState(() => expandedIndex = isExpanded ? -1 : panelIndex),
         children: <ExpansionPanel>[
@@ -115,7 +115,7 @@ ExpansionPanel _makeReportPanel(String title, String formType, bool isExpanded, 
       child: new Text(title, style: Theme.of(context).textTheme.title),
     ),
     body: new Container(
-      constraints: new BoxConstraints(maxHeight: 290.0), // height assumes two reports per team. change if necessary.
+      constraints: const BoxConstraints(maxHeight: 290.0), // height assumes two reports per team. change if necessary.
       child: new FRCFormReportView(reports, FRCFormTypeManager.instance.getTypeByCodeName(formType)),
     ),
     isExpanded: isExpanded,

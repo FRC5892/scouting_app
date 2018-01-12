@@ -45,7 +45,7 @@ class _IntegerFieldFillState extends State<_IntegerFieldFill> {
         builder: (FormFieldState<int> field) => new Row(
           children: <Widget>[
             new ConstrainedBox(
-              constraints: new BoxConstraints(maxWidth: buttonWidth),
+              constraints: const BoxConstraints(maxWidth: buttonWidth),
               child: new FlatButton(
                 child: const Text("-", style: const TextStyle(fontSize: buttonFontSize)),
                 onPressed: () {
@@ -57,7 +57,7 @@ class _IntegerFieldFillState extends State<_IntegerFieldFill> {
               ),
             ),
             new ConstrainedBox(
-              constraints: new BoxConstraints(maxWidth: 50.0),
+              constraints: const BoxConstraints(maxWidth: 50.0),
               child: new TextField(
                 controller: _controller,
                 textAlign: TextAlign.right,
@@ -70,7 +70,7 @@ class _IntegerFieldFillState extends State<_IntegerFieldFill> {
               ),
             ),
             new ConstrainedBox(
-              constraints: new BoxConstraints(maxWidth: buttonWidth),
+              constraints: const BoxConstraints(maxWidth: buttonWidth),
               child: new FlatButton(
                 child: const Text("+", style: const TextStyle(fontSize: buttonFontSize)),
                 onPressed: () {

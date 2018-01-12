@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ListHeader extends StatelessWidget {
   final String text;
-  ListHeader(this.text);
+  const ListHeader(this.text);
 
   @override
   Widget build(BuildContext context) {

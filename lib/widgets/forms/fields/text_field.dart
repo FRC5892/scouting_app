@@ -42,7 +42,7 @@ class _TextFieldFillState extends State<_TextFieldFill> {
     return new ListTile(
       title: new Text(widget.data.title),
       trailing: new Container(
-        constraints: new BoxConstraints(maxWidth: 200.0),
+        constraints: const BoxConstraints(maxWidth: 200.0),
         child: new TextFormField(
           initialValue: initValue,
           controller: _controller,
@@ -97,7 +97,7 @@ class _TextListReport extends StatelessWidget {
     return new ListTile(
       title: new Text(data.title),
       trailing: new IconButton(
-        icon: new Icon(Icons.launch),
+        icon: const Icon(Icons.launch),
         onPressed: values.length > 0
           ? () => Navigator.push(context, new MaterialPageRoute(builder: (_) => new _TextListReportScreen(data.title, values)))
           : null,
@@ -121,13 +121,13 @@ class _TextListReportScreen extends StatelessWidget {
         itemCount: values.length,
         itemBuilder: (context, index) {
           Widget textWidget = new Container(
-            padding: new EdgeInsets.all(10.0),
-            child: new Text(values[index], style: new TextStyle(fontSize: 15.0)),
+            padding: const EdgeInsets.all(10.0),
+            child: new Text(values[index], style: const TextStyle(fontSize: 15.0)),
           );
           if (index == 0) return textWidget;
           return new Column(
             children: <Widget>[
-              new Divider(),
+              const Divider(),
               textWidget,
             ],
           );

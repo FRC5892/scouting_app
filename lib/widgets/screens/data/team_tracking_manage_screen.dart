@@ -46,13 +46,13 @@ class _TTMScreenState extends State<TeamTrackingManagementScreen> {
       appBar: new AppBar(
         title: const Text("Tracked Teams"),
         actions: <Widget> [
-          new IconButton(icon: new Icon(Icons.add), onPressed: () =>
+          new IconButton(icon: const Icon(Icons.add), onPressed: () =>
             showDialog(context: context, child: new TeamNumberEntryDialog()).then((input) {
               if (input != null) setState(() => tracking.add(input));
             }),
           ),
-          new IconButton(icon: new Icon(Icons.more_vert), onPressed: null),
-          new IconButton(icon: new Icon(Icons.check), onPressed: () => submitExitHandler(context)),
+          new IconButton(icon: const Icon(Icons.more_vert), onPressed: null),
+          new IconButton(icon: const Icon(Icons.check), onPressed: () => submitExitHandler(context)),
         ],
       ),
       body: new ListView.builder(
@@ -60,7 +60,7 @@ class _TTMScreenState extends State<TeamTrackingManagementScreen> {
         itemBuilder: (BuildContext context, int index) => new ListTile(
           title: new Text(trackList[index].toString()),
           trailing: new IconButton(
-            icon: new Icon(Icons.remove),
+            icon: const Icon(Icons.remove),
             onPressed: () => setState(() => tracking.remove(trackList[index])),
           ),
         ),

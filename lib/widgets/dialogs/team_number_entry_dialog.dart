@@ -15,10 +15,10 @@ class TeamNumberEntryDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new SimpleDialog(
-      title: new Text("Enter team number"),
+      title: const Text("Enter team number"),
       children: <Widget>[
         new Container(
-          padding: new EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 4.0),
+          padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 4.0),
           child: new TextField(
             controller: _controller,
             textAlign: TextAlign.right,

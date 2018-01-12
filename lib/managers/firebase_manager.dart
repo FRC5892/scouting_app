@@ -22,7 +22,7 @@ class FirebaseManager {
       await colRef.document(f.uid).setData(f.form);
     }
     await StorageManager.deleteAllForms();
-    await _signOut(user);
+    await _signOut();
   }
 
   Future<Null> getData() async {
@@ -43,7 +43,7 @@ class FirebaseManager {
     await Future.wait(finished);
 
     await StorageManager.setLastPullTimestamp(new DateTime.now());
-    await _signOut(user);
+    await _signOut();
   }
 
   Function _saveDataFromSnapshotCallback(int teamNumber) {
@@ -55,18 +55,11 @@ class FirebaseManager {
   }
 
   Future<FirebaseUser> _signIn() async {
-    //SharedPreferences sPrefs = await SharedPreferences.getInstance();
     FirebaseUser user = await FirebaseAuth.instance.signInAnonymously();
-    /*Map<String, dynamic> userData = <String, dynamic> {
-      "teamPass": sPrefs.getString(MapKeys.TEAM_PASS),
-      "timestamp": new DateTime.now().millisecondsSinceEpoch,
-    };
-    await Firestore.instance.document("users/${user.uid}").setData(userData);*/
     return user;
   }
 
-  Future<Null> _signOut(FirebaseUser user) async {
-    //await Firestore.instance.document("users/${user.uid}").delete();
+  Future<Null> _signOut() async {
     await FirebaseAuth.instance.signOut();
   }
 }

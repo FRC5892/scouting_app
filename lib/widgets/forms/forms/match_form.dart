@@ -10,20 +10,20 @@ class MatchForm extends FRCFormType {
       new FRCFormFieldData<int>(const IntegerField(), "matchPositionNumber", "Position Number", (_) => "(various)"),
 
       // autonomous [2:4]
-      new FRCFormFieldData<bool>(const BooleanField(), "matchAutoMobility", "Auto Line", NumberCrunchFuncs.percentage),
-      new FRCFormFieldData<int>(const IntegerField(), "matchAutoCubes", "Power Cubes Delivered", NumberCrunchFuncs.average),
+      const FRCFormFieldData<bool>(const BooleanField(), "matchAutoMobility", "Auto Line", NumberCrunchFuncs.percentage),
+      const FRCFormFieldData<int>(const IntegerField(), "matchAutoCubes", "Power Cubes Delivered", NumberCrunchFuncs.average),
 
       // teleop [4:11]
-      new FRCFormFieldData<String>(const FRCTextField(), "matchStrategy", "Strategy", NumberCrunchFuncs.dataList),
-      new FRCFormFieldData<int>(const IntegerField(), "matchCubesSw1tch", "Cubes to Own Switch", NumberCrunchFuncs.average),
-      new FRCFormFieldData<int>(const IntegerField(), "matchCubesScale", "Cubes to Scale", NumberCrunchFuncs.average),
-      new FRCFormFieldData<int>(const IntegerField(), "matchCubesSw2tch", "Cubes to Enemy Switch", NumberCrunchFuncs.average),
-      new FRCFormFieldData<int>(const IntegerField(), "matchCubesExchange", "Cubes to Exchange", NumberCrunchFuncs.average),
-      new FRCFormFieldData<bool>(const BooleanField(), "matchHang", "Hang on Scale", NumberCrunchFuncs.percentage),
-      new FRCFormFieldData<int>(const IntegerField(), "matchPenalties", "Penalties", NumberCrunchFuncs.average),
+      const FRCFormFieldData<String>(const FRCTextField(), "matchStrategy", "Strategy", NumberCrunchFuncs.dataList),
+      const FRCFormFieldData<int>(const IntegerField(), "matchCubesSw1tch", "Cubes to Own Switch", NumberCrunchFuncs.average),
+      const FRCFormFieldData<int>(const IntegerField(), "matchCubesScale", "Cubes to Scale", NumberCrunchFuncs.average),
+      const FRCFormFieldData<int>(const IntegerField(), "matchCubesSw2tch", "Cubes to Enemy Switch", NumberCrunchFuncs.average),
+      const FRCFormFieldData<int>(const IntegerField(), "matchCubesExchange", "Cubes to Exchange", NumberCrunchFuncs.average),
+      const FRCFormFieldData<bool>(const BooleanField(), "matchHang", "Hang on Scale", NumberCrunchFuncs.percentage),
+      const FRCFormFieldData<int>(const IntegerField(), "matchPenalties", "Penalties", NumberCrunchFuncs.average),
 
       // post-match [11:12]
-      new FRCFormFieldData<String>(const FRCTextField(), "matchComments", "Other Comments", NumberCrunchFuncs.dataList),
+      const FRCFormFieldData<String>(const FRCTextField(), "matchComments", "Other Comments", NumberCrunchFuncs.dataList),
     ],
     _build,
   );
@@ -32,15 +32,15 @@ class MatchForm extends FRCFormType {
     return new ListView(
       addAutomaticKeepAlives: true,
       children: <Widget>[
-        new ListHeader("Pre-Match"),
+        const ListHeader("Pre-Match"),
         fields[0],
         fields[1],
 
-        new ListHeader("Autonomous"),
+        const ListHeader("Autonomous"),
         fields[2],
         fields[3],
 
-        new ListHeader("TeleOp"),
+        const ListHeader("TeleOp"),
         fields[4],
         fields[5],
         fields[6],
@@ -49,7 +49,7 @@ class MatchForm extends FRCFormType {
         fields[9],
         fields[10],
 
-        new ListHeader("Post-Match"),
+        const ListHeader("Post-Match"),
         fields[11],
       ],
     );

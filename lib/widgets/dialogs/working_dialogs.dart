@@ -12,15 +12,15 @@ class WorkingDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     work.then((_) => Navigator.pop(context, true)).catchError((_) => Navigator.pop(context, false));
     return new SimpleDialog(
-      children: <Widget>[
+      children: <Widget> [
         new Row(
           children: <Widget>[
             new Container(
-              padding: new EdgeInsets.all(20.0), // see commit 714db1329b283578a7a3d03b2a1159bf7ae3b4e1 for previous settings
-              child: new CircularProgressIndicator(), // to be replaced... eventually
+              padding: const EdgeInsets.all(20.0), // see commit 714db1329b283578a7a3d03b2a1159bf7ae3b4e1 for previous settings
+              child: const CircularProgressIndicator(), // to be replaced... eventually
             ),
             new Container(
-              padding: new EdgeInsets.symmetric(horizontal: 5.0),
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
               child: new Text(text),
             ),
           ],

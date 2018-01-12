@@ -59,7 +59,7 @@ class FRCFormFillViewState extends State<FRCFormFillView> {
         appBar: new AppBar(
           title: new Text(widget.title),
           actions: <Widget> [
-            new IconButton(icon: new Icon(Icons.check), onPressed: () => submitCallback(context),),
+            new IconButton(icon: const Icon(Icons.check), onPressed: () => submitCallback(context),),
           ],
         ),
         body: widget.type.buildFormFill(context, saveCallback),

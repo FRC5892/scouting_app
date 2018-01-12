@@ -9,17 +9,17 @@ class FormsHome extends StatefulWidget implements HomeView {
   @override
   List<Widget> actions(BuildContext context) {
     return <Widget> [
-      new Builder(builder: (BuildContext context) => new IconButton(icon: new Icon(Icons.cloud_upload), onPressed: () =>
+      new Builder(builder: (BuildContext context) => new IconButton(icon: const Icon(Icons.cloud_upload), onPressed: () =>
         showDialog(context: context, barrierDismissible: false, child: new FirebasePushDialog())
           .then((r) {
-            if (!r) Scaffold.of(context).showSnackBar(new SnackBar(
+            if (!r) Scaffold.of(context).showSnackBar(const SnackBar(
               content: const Text("Push failed. Check your Internet conection."),
               backgroundColor: ERROR_COLOR,
             ));
         })
       )),
       new PopupMenuButton<String>(
-        icon: new Icon(Icons.add),
+        icon: const Icon(Icons.add),
         onSelected: (t) async {
           int teamNumber = await showDialog(context: context, child: new TeamNumberEntryDialog());
           if (teamNumber != null) FRCFormTypeManager.instance.fillForm(context, t, teamNumber);
@@ -36,7 +36,7 @@ class FormsHome extends StatefulWidget implements HomeView {
         ],
       ),
       new PopupMenuButton<VoidCallback>(
-        icon: new Icon(Icons.more_vert),
+        icon: const Icon(Icons.more_vert),
         onSelected: (cb) => cb(),
         itemBuilder: (_) => const <PopupMenuItem<VoidCallback>> [
           const PopupMenuItem(
@@ -147,5 +147,5 @@ class _FormMetaEntry {
   final String uid;
   final DateTime timestamp;
   final FRCFormType type;
-  _FormMetaEntry({this.title, this.teamNumber, this.uid, this.timestamp, this.type});
+  const _FormMetaEntry({this.title, this.teamNumber, this.uid, this.timestamp, this.type});
 }

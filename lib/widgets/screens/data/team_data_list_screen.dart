@@ -70,5 +70,5 @@ class _FormMetaEntry {
   final String uid;
   final DateTime timestamp;
   final FRCFormType type;
-  _FormMetaEntry({this.title, this.author, this.uid, this.timestamp, this.type});
+  const _FormMetaEntry({this.title, this.author, this.uid, this.timestamp, this.type});
 }

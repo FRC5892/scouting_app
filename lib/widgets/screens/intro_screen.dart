@@ -9,7 +9,7 @@ class IntroScreen extends StatelessWidget {
     () async {
       SharedPreferences sPrefs = await SharedPreferences.getInstance();
       if (sPrefs.getString(MapKeys.USER_NAME) == null)
-        sPrefs.setString(MapKeys.USER_NAME, await showDialog(context: context, child: new TextEntryDialog("Enter name.")));
+        sPrefs.setString(MapKeys.USER_NAME, await showDialog(context: context, child: const TextEntryDialog("Enter name.")));
       Navigator.pushReplacementNamed(context, "/home");
     }();
     return const Scaffold();

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class TextAlertDialog extends StatelessWidget {
   final String text;
-  TextAlertDialog(this.text);
+  const TextAlertDialog(this.text);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class TextAlertDialog extends StatelessWidget {
       actions: <Widget> [
         new FlatButton(
           onPressed: Navigator.of(context).pop,
-          child: new Text("CLOSE"),
+          child: const Text("CLOSE"),
         ),
       ],
     );

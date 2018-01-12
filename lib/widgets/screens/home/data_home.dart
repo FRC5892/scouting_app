@@ -11,9 +11,9 @@ class DataHome extends StatefulWidget implements HomeView {
   List<Widget> actions(BuildContext context) {
     return <Widget> [
       new Builder(builder: (BuildContext context) =>
-        new IconButton(icon: new Icon(Icons.cloud_download), onPressed: () => _pullAndCrunchNumbers(context))
+        new IconButton(icon: const Icon(Icons.cloud_download), onPressed: () => _pullAndCrunchNumbers(context))
       ),
-      new IconButton(icon: new Icon(Icons.search), onPressed: null),
+      new IconButton(icon: const Icon(Icons.search), onPressed: null),
       new Builder(builder: (BuildContext context) =>
         new PopupMenuButton<_AppBarPopupOption>(
           onSelected: (selected) => handleAppBarMenu(context, selected),
@@ -52,13 +52,13 @@ class DataHome extends StatefulWidget implements HomeView {
   static Future<Null> _pullAndCrunchNumbers(BuildContext context) async {
     bool awaitResult = await showDialog(context: context, barrierDismissible: false, child: new FirebasePullDialog());
     if (!awaitResult) {
-      Scaffold.of(context).showSnackBar(new SnackBar(
+      Scaffold.of(context).showSnackBar(const SnackBar(
         content: const Text("Pull failed. Check your Internet connection."),
         backgroundColor: ERROR_COLOR,
       ));
       return;
     }
-    Scaffold.of(context).showSnackBar(new SnackBar(
+    Scaffold.of(context).showSnackBar(const SnackBar(
       content: const Text("Pull successful. Generating reports..."),
     ));
     StorageManager.setCrunchingNumbers(true);
@@ -69,7 +69,7 @@ class DataHome extends StatefulWidget implements HomeView {
     reports.listen((report) {
       if (report == DONE_MESSAGE) {
         StorageManager.setCrunchingNumbers(false);
-        Scaffold.of(context).showSnackBar(new SnackBar(
+        Scaffold.of(context).showSnackBar(const SnackBar(
           content: const Text("Reports generated!"),
           backgroundColor: SUCCESS_COLOR,
         ));

@@ -21,7 +21,7 @@ class FRCFormFieldData<T> {
   final String jsonKey;
   final String title;
   final NumberCrunchFunc<T> numberCrunchFunc;
-  FRCFormFieldData(this.type, this.jsonKey, this.title, this.numberCrunchFunc);
+  const FRCFormFieldData(this.type, this.jsonKey, this.title, this.numberCrunchFunc);
 
   // convenience methods
   Widget formFill(FRCFormSaveCallback saveCallback) => type.formFill(this, saveCallback);
