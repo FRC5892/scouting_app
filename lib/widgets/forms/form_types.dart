@@ -13,10 +13,6 @@ class FRCFormType {
     return builder(context, fields.map((f) => f.formFill(saveCallback)).toList());
   }
 
-  Widget buildFormEdit(BuildContext context, List values) {
-    throw "TODO";
-  }
-
   Widget buildDataView(BuildContext context, List values) {
     List<Widget> pass = [];
     for (int i=0; i<values.length; i++)

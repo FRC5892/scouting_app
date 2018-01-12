@@ -36,7 +36,7 @@ class _TTMScreenState extends State<TeamTrackingManagementScreen> {
     Navigator.pop(context, await showDialog(context: context, child: const YesNoAlertDialog(
       title: "Pull existing data?",
       content: "If you choose \"No,\" only data entered after the present moment will be pulled.",
-    ))); // TODO allow picking a time
+    )));
   }
 
   @override

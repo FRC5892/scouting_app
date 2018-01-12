@@ -9,7 +9,6 @@ typedef Widget FRCFormFieldReport<T>(FRCFormFieldData<T> data, String reportValu
 
 class FRCFormFieldType<T> {
   final FRCFormFieldFill<T> formFill;
-  // TODO final FRCFormFieldEdit<T> formEdit;
   final FRCFormFieldView<T> dataView;
   final FRCFormFieldReport<T> dataReport;
 

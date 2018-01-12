@@ -50,9 +50,16 @@ class DataHome extends StatefulWidget implements HomeView {
   }
 
   static Future<Null> _pullAndCrunchNumbers(BuildContext context) async {
-    await showDialog(context: context, barrierDismissible: false, child: new FirebasePullDialog()); // TODO handle errors
+    bool awaitResult = await showDialog(context: context, barrierDismissible: false, child: new FirebasePullDialog());
+    if (!awaitResult) {
+      Scaffold.of(context).showSnackBar(new SnackBar(
+        content: const Text("Pull failed. Check your Internet connection."),
+        backgroundColor: ERROR_COLOR,
+      ));
+      return;
+    }
     Scaffold.of(context).showSnackBar(new SnackBar(
-      content: new Text("Pull successful. Generating reports..."),
+      content: const Text("Pull successful. Generating reports..."),
     ));
     StorageManager.setCrunchingNumbers(true);
     Map<int, List<FormWithMetadata>> data = new Map();
@@ -63,8 +70,8 @@ class DataHome extends StatefulWidget implements HomeView {
       if (report == DONE_MESSAGE) {
         StorageManager.setCrunchingNumbers(false);
         Scaffold.of(context).showSnackBar(new SnackBar(
-          content: new Text("Reports generated!"),
-          backgroundColor: new Color(0xFF006432),
+          content: const Text("Reports generated!"),
+          backgroundColor: SUCCESS_COLOR,
         ));
       }
       else if (report is NumberCrunchTeamReport) {

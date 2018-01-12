@@ -9,9 +9,15 @@ class FormsHome extends StatefulWidget implements HomeView {
   @override
   List<Widget> actions(BuildContext context) {
     return <Widget> [
-      new IconButton(icon: new Icon(Icons.cloud_upload), onPressed: () =>
-        showDialog(context: context, barrierDismissible: false, child: new FirebasePushDialog()) // TODO handle errors
-      ),
+      new Builder(builder: (BuildContext context) => new IconButton(icon: new Icon(Icons.cloud_upload), onPressed: () =>
+        showDialog(context: context, barrierDismissible: false, child: new FirebasePushDialog())
+          .then((r) {
+            if (!r) Scaffold.of(context).showSnackBar(new SnackBar(
+              content: const Text("Push failed. Check your Internet conection."),
+              backgroundColor: ERROR_COLOR,
+            ));
+        })
+      )),
       new PopupMenuButton<String>(
         icon: new Icon(Icons.add),
         onSelected: (t) async {

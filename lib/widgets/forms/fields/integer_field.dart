@@ -40,7 +40,7 @@ class _IntegerFieldFillState extends State<_IntegerFieldFill> {
   Widget build(BuildContext context) {
     return new ListTile(
       title: new Text(widget.data.title),
-      trailing: new FormField<int>( // TODO data validation
+      trailing: new FormField<int>(
         initialValue: initValue,
         builder: (FormFieldState<int> field) => new Row(
           children: <Widget>[

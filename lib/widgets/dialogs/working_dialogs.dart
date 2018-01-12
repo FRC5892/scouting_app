@@ -10,14 +10,14 @@ class WorkingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    work.whenComplete(Navigator.of(context).pop);
+    work.then((_) => Navigator.pop(context, true)).catchError((_) => Navigator.pop(context, false));
     return new SimpleDialog(
       children: <Widget>[
         new Row(
           children: <Widget>[
             new Container(
               padding: new EdgeInsets.all(20.0), // see commit 714db1329b283578a7a3d03b2a1159bf7ae3b4e1 for previous settings
-              child: new CircularProgressIndicator(), // to be replaced... :)
+              child: new CircularProgressIndicator(), // to be replaced... eventually
             ),
             new Container(
               padding: new EdgeInsets.symmetric(horizontal: 5.0),
