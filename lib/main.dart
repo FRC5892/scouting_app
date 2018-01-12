@@ -19,6 +19,7 @@ export 'widgets/screens/data/team_data_list_screen.dart';
 export 'widgets/screens/home/home_screen.dart';
 export 'widgets/screens/intro_screen.dart';
 export 'widgets/misc/list_header.dart';
+export 'widgets/dialogs/text_entry_dialog.dart';
 
 void main() {
   //debugPaintSizeEnabled = true; // import the flutter rendering library
