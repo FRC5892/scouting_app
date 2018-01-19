@@ -19,7 +19,8 @@ class MatchForm extends FRCFormType {
       const FRCFormFieldData<int>(const IntegerField(), "matchCubesScale", "Cubes to Scale", NumberCrunchFuncs.average),
       const FRCFormFieldData<int>(const IntegerField(), "matchCubesSw2tch", "Cubes to Enemy Switch", NumberCrunchFuncs.average),
       const FRCFormFieldData<int>(const IntegerField(), "matchCubesExchange", "Cubes to Exchange", NumberCrunchFuncs.average),
-      const FRCFormFieldData<bool>(const BooleanField(), "matchHang", "Hang on Scale", NumberCrunchFuncs.percentage),
+      const FRCFormFieldData<bool>(const BooleanField(), "matchClimb", "Climb by Self", NumberCrunchFuncs.percentage),
+      const FRCFormFieldData<bool>(const BooleanField(), "matchClimbAssist", "Assist Teammates Climbing", NumberCrunchFuncs.percentage),
       const FRCFormFieldData<int>(const IntegerField(), "matchPenalties", "Penalties", NumberCrunchFuncs.average),
 
       // post-match [11:12]

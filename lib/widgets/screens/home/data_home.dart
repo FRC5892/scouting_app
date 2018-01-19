@@ -13,7 +13,7 @@ class DataHome extends StatefulWidget implements HomeView {
       new Builder(builder: (BuildContext context) =>
         new IconButton(icon: const Icon(Icons.cloud_download), onPressed: () => _pullAndCrunchNumbers(context))
       ),
-      new IconButton(icon: const Icon(Icons.search), onPressed: null),
+      new IconButton(icon: const Icon(Icons.search), onPressed: () => Navigator.pushNamed(context, "/data/filterReports")),
       new Builder(builder: (BuildContext context) =>
         new PopupMenuButton<_AppBarPopupOption>(
           onSelected: (selected) => handleAppBarMenu(context, selected),

@@ -20,6 +20,7 @@ export 'widgets/screens/home/home_screen.dart';
 export 'widgets/screens/intro_screen.dart';
 export 'widgets/misc/list_header.dart';
 export 'widgets/dialogs/text_entry_dialog.dart';
+export 'widgets/screens/data/report_filter_screen.dart';
 
 void main() {
   //debugPaintSizeEnabled = true; // import the flutter rendering library
@@ -33,6 +34,7 @@ void main() {
     routes: <String, WidgetBuilder> {
       "/home": (_) => new HomeScreen(),
       "/data/manageTeams": (_) => new TeamTrackingManagementScreen(),
+      "/data/filterReports": (_) => new ReportFilterScreen(),
     },
   ));
 }
