@@ -86,7 +86,7 @@ class _ReportFilterScreenState extends State<ReportFilterScreen> {
                         controller: _controller,
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.end,
-                        onSubmitted: (val) => setState(() => threshold = num.parse(val)),
+                        onChanged: (val) => setState(() => threshold = num.parse(val)),
                       ),
                     )
                   ],
