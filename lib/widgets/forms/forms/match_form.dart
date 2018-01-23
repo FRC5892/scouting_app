@@ -7,13 +7,13 @@ class MatchForm extends FRCFormType {
     <FRCFormFieldData> [ // updating this does not work automatically like other forms! be sure to check _build()!
       // pre-match [0:2]
       new FRCFormFieldData<int>(const IntegerField(), "matchMatchNumber", "Match Number", (_) => "(various)"),
-      new FRCFormFieldData<int>(const IntegerField(), "matchPositionNumber", "Position Number", (_) => "(various)"),
+      const FRCFormFieldData<int>(const IntegerField(), "matchPositionNumber", "Position Number", NumberCrunchFuncs.average),
 
       // autonomous [2:4]
       const FRCFormFieldData<bool>(const BooleanField(), "matchAutoMobility", "Auto Line", NumberCrunchFuncs.percentage),
       const FRCFormFieldData<int>(const IntegerField(), "matchAutoCubes", "Power Cubes Delivered", NumberCrunchFuncs.average),
 
-      // teleop [4:11]
+      // teleop [4:12]
       const FRCFormFieldData<String>(const FRCTextField(), "matchStrategy", "Strategy", NumberCrunchFuncs.dataList),
       const FRCFormFieldData<int>(const IntegerField(), "matchCubesSw1tch", "Cubes to Own Switch", NumberCrunchFuncs.average),
       const FRCFormFieldData<int>(const IntegerField(), "matchCubesScale", "Cubes to Scale", NumberCrunchFuncs.average),
@@ -23,7 +23,7 @@ class MatchForm extends FRCFormType {
       const FRCFormFieldData<bool>(const BooleanField(), "matchClimbAssist", "Assist Teammates Climbing", NumberCrunchFuncs.percentage),
       const FRCFormFieldData<int>(const IntegerField(), "matchPenalties", "Penalties", NumberCrunchFuncs.average),
 
-      // post-match [11:12]
+      // post-match [12:13]
       const FRCFormFieldData<String>(const FRCTextField(), "matchComments", "Other Comments", NumberCrunchFuncs.dataList),
     ],
     _build,
@@ -49,9 +49,10 @@ class MatchForm extends FRCFormType {
         fields[8],
         fields[9],
         fields[10],
+		fields[11],
 
         const ListHeader("Post-Match"),
-        fields[11],
+        fields[12],
       ],
     );
   }
