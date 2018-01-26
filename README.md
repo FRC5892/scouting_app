@@ -8,6 +8,8 @@ We have not yet released the app on the App Store or Play Store, but it is open 
 
 The app is cross-compatible between Android and iOS. In order to compile for iOS, you will need a Mac.
 
+Note that the app will not compile until you follow the instructions below to generate Firebase configuration files.
+
 ## Instructions to Compile
 1. Install Flutter on the computer. Instructions for Windows, Mac, and Linux are at <https://flutter.io/setup/>.
 2. Clone this repository.
