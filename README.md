@@ -12,6 +12,7 @@ The app is cross-compatible between Android and iOS. In order to compile for iOS
 1. Install Flutter on the computer. Instructions for Windows, Mac, and Linux are at <https://flutter.io/setup/>.
 2. Clone this repository.
 3. Follow the instructions at [this link](https://codelabs.developers.google.com/codelabs/flutter-firebase/index.html#4) to create a database and add configuration files for whichever platform(s) you need to support. Disregard the "Integrate the FlutterFire package" section and anything below.
+4. Ensure that your Firebase project has Cloud Firestore and anonymous sign-in enabled.
 
 ### Building for iOS
 ~~Please note that I know very little about iOS development. Don't hesitate to suggest improvements to this.~~
