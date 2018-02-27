@@ -17,7 +17,7 @@ class _ReportFilterScreenState extends State<ReportFilterScreen> {
     "matchCubesSw2tch": "TeleOp Cubes to Sw2tch",
     "matchCubesExchange": "TeleOp Cubes to Exchange",
     "matchClimb": "Climb Alone",
-    "matchClimbAssist": "Climb with Teammates",
+    "matchClimbAssist": "Climb Assist",
     "matchPenalties": "Penalties",
   };
 
